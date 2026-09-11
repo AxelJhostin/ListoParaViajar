@@ -1,0 +1,13 @@
+node_modules/
+.next/
+.env*
+!.env.example
+.neon
+.vercel/
+*.tsbuildinfo
+test-results/
+playwright-report/
+coverage/
+.DS_Store
+public/sw.js
+qa-artifacts/

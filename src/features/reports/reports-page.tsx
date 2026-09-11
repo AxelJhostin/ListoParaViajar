@@ -6,7 +6,7 @@ import { Field, PageHeading } from "@/components/ui";
 import { categories } from "@/domain/models";
 import { expenseTotal, formatMoney, groupExpenses } from "@/domain/money";
 import { downloadCsv } from "./export";
-import { localDB, type Attachment } from "@/local/database";
+import { localDB, readAttachment, type Attachment } from "@/local/database";
 function Receipt({ photo }: { photo: Attachment }) {
   const [url, setUrl] = useState("");
   useEffect(() => {
@@ -33,7 +33,7 @@ export function ReportsPage() {
   useEffect(() => {
     void localDB()
       .then((db) => db.getAll("photos"))
-      .then(setPhotos);
+      .then((files) => setPhotos(files.map(readAttachment)));
   }, []);
   const rows = expenses
     .filter(

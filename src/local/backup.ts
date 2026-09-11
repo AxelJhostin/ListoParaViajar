@@ -1,7 +1,13 @@
 import { zipSync, unzipSync, strToU8, strFromU8 } from "fflate";
 import { z } from "zod";
 import { recordSchema, rateSchema } from "@/domain/models";
-import { localDB, announce, type Attachment } from "./database";
+import {
+  localDB,
+  announce,
+  storeAttachment,
+  readAttachment,
+  type Attachment,
+} from "./database";
 import { downloadBlob } from "@/features/reports/export";
 const backupSchema = z.object({
   format: z.literal("listo-viajar-1"),
@@ -24,7 +30,7 @@ const backupSchema = z.object({
 export async function exportBackup() {
   const db = await localDB();
   const records = await db.getAll("records"),
-    photos = await db.getAll("photos");
+    photos = (await db.getAll("photos")).map(readAttachment);
   const files: Record<string, Uint8Array> = {};
   for (const p of photos)
     files[`attachments/${p.id}`] = new Uint8Array(await p.blob.arrayBuffer());
@@ -85,6 +91,7 @@ export async function importBackup(file: File) {
       blob: new Blob([new Uint8Array(bytes)], { type: p.type }),
     };
   });
+  const storedPhotos = await Promise.all(photos.map(storeAttachment));
   const db = await localDB(),
     tx = db.transaction(["records", "outbox", "photos", "meta"], "readwrite");
   let imported = 0;
@@ -97,7 +104,7 @@ export async function importBackup(file: File) {
       .put({ record: local, baseVersion: 0, opId: crypto.randomUUID() });
     imported++;
   }
-  for (const p of photos)
+  for (const p of storedPhotos)
     if (!(await tx.objectStore("photos").get(p.id)))
       await tx.objectStore("photos").put(p);
   if (data.rate && !(await tx.objectStore("meta").get("rate")))

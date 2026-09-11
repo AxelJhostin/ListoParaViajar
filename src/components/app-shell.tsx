@@ -27,7 +27,7 @@ const nav = [
 export function AppShell({ children }: { children: ReactNode }) {
   const path = usePathname(),
     [converter, setConverter] = useState(false);
-  const { online, pending, status, error, ready } = useTrip();
+  const { online, pending, status, error, ready, lastSync } = useTrip();
   const titles: Record<string, string> = {
     "/documentos": "Documentos",
     "/ruta": "Ruta y vuelos",
@@ -46,7 +46,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         ? `${pending.length} pendientes`
         : error
           ? "Revisar conexión"
-          : "Sincronizado";
+          : lastSync
+            ? "Sincronizado"
+            : "Por sincronizar";
   const Icon = !online
     ? CloudOff
     : status === "syncing"

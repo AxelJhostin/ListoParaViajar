@@ -1,4 +1,12 @@
-import type { ReactNode } from "react";
+"use client";
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  useId,
+  type ReactNode,
+  type ReactElement,
+} from "react";
 import { Plus, Search } from "lucide-react";
 export function Empty({
   title,
@@ -51,10 +59,35 @@ export function Field({
   label: string;
   children: ReactNode;
 }) {
+  const id = useId();
+  function associate(nodes: ReactNode): ReactNode {
+    return Children.map(nodes, (node) => {
+      if (!isValidElement(node)) return node;
+      const element = node as ReactElement<{
+        id?: string;
+        "aria-label"?: string;
+        "aria-labelledby"?: string;
+        children?: ReactNode;
+      }>;
+      if (
+        typeof element.type === "string" &&
+        ["input", "select", "textarea"].includes(element.type)
+      )
+        return cloneElement(element, {
+          id,
+          "aria-labelledby": element.props["aria-label"]
+            ? undefined
+            : id + "-label",
+        });
+      return element.props.children
+        ? cloneElement(element, {}, associate(element.props.children))
+        : element;
+    });
+  }
   return (
-    <label className="field">
-      <span>{label}</span>
-      {children}
+    <label className="field" htmlFor={id}>
+      <span id={id + "-label"}>{label}</span>
+      {associate(children)}
     </label>
   );
 }

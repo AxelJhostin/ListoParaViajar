@@ -12,10 +12,31 @@ export type Attachment = {
   blob: Blob;
   createdAt: string;
 };
+export type StoredAttachment = Omit<Attachment, "blob"> & {
+  bytes?: ArrayBuffer;
+  blob?: Blob;
+};
+export async function storeAttachment(
+  file: Attachment,
+): Promise<StoredAttachment> {
+  const { blob, ...meta } = file;
+  return { ...meta, bytes: await blob.arrayBuffer() };
+}
+export function readAttachment(file: StoredAttachment): Attachment {
+  const { bytes, blob, ...meta } = file;
+  return {
+    ...meta,
+    blob: blob || new Blob([bytes || new ArrayBuffer(0)], { type: file.type }),
+  };
+}
 interface LocalSchema extends DBSchema {
   records: { key: string; value: TripRecord };
   outbox: { key: string; value: Pending };
-  photos: { key: string; value: Attachment; indexes: { "by-record": string } };
+  photos: {
+    key: string;
+    value: StoredAttachment;
+    indexes: { "by-record": string };
+  };
   meta: { key: string; value: unknown };
 }
 let connection: ReturnType<typeof openDB<LocalSchema>> | undefined;

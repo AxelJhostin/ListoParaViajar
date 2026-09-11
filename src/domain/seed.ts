@@ -44,11 +44,12 @@ export function initialRecords(): TripRecord[] {
       add("document", {
         description,
         person,
-        stage: description.includes("ida")
-          ? "Ida"
-          : description.includes("regreso")
-            ? "Regreso"
-            : "Todo el viaje",
+        stage:
+          description === "Documentos de ida"
+            ? "Ida"
+            : description.includes("regreso")
+              ? "Regreso"
+              : "Todo el viaje",
       });
   for (const description of [
     "Dirección del hospedaje en Toronto",

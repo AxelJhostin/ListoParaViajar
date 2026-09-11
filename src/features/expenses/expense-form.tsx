@@ -44,7 +44,7 @@ export function ExpenseForm({
   const [draft, setDraft] = useState(() => ({
     ...defaults("expense"),
     ...existing?.data,
-    rate: existing?.data.rate ?? rate,
+    rate: existing ? existing.data.rate : rate,
   }));
   const [amount, setAmount] = useState(
       existing ? String(existing.data.amountMinor / 100) : "",

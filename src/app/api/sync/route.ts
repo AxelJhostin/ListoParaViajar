@@ -3,6 +3,7 @@ import { database } from "@/server/db/client";
 import { records } from "@/server/db/schema";
 import { applyMutation } from "@/server/sync-service";
 import { mutationSchema } from "@/domain/models";
+import { hasSameOrigin } from "@/server/request-origin";
 export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "no-store" };
 function failure() {
@@ -29,8 +30,7 @@ export async function GET() {
   }
 }
 export async function POST(request: Request) {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== new URL(request.url).origin)
+  if (!hasSameOrigin(request))
     return NextResponse.json(
       { error: "Origen no permitido" },
       { status: 403, headers },

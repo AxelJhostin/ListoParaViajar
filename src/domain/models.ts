@@ -39,6 +39,8 @@ export type Kind = (typeof kinds)[number];
 const text = z.string().trim().min(1, "Este campo es obligatorio").max(250);
 const note = z.string().max(4000).default("");
 const money = z.number().int().min(0).max(99_999_999_999);
+const dateOnly = z.iso.date();
+const timeOnly = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Hora inválida");
 export const rateSchema = z.object({
   value: z.number().positive().max(100),
   date: z.string().min(1),
@@ -55,8 +57,8 @@ export const expenseSchema = z.object({
   category: z.enum(categories),
   paidBy: text,
   paymentMethod: z.enum(paymentMethods),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  time: z.string().regex(/^\d{2}:\d{2}$/),
+  date: dateOnly,
+  time: timeOnly,
   notes: note,
 });
 export const packingSchema = z.object({
@@ -83,7 +85,7 @@ export const documentSchema = z.object({
   person: text,
   stage: text,
   status: z.enum(["Pendiente", "Revisado", "Listo"]),
-  expires: z.string().default(""),
+  expires: z.union([z.literal(""), dateOnly]).default(""),
   notes: note,
 });
 export const ideaSchema = z.object({
@@ -102,8 +104,8 @@ export const legSchema = z.object({
   description: text,
   direction: z.enum(["Ida", "Regreso"]),
   order: z.number().int().min(0).max(50),
-  date: z.string(),
-  time: z.string(),
+  date: z.union([z.literal(""), dateOnly]),
+  time: z.union([z.literal(""), timeOnly]),
   airport: z.string().max(250),
   airline: z.string().max(250),
   flight: z.string().max(100),

@@ -1,4 +1,9 @@
-import { localDB, announce, type Attachment } from "./database";
+import {
+  localDB,
+  announce,
+  storeAttachment,
+  type Attachment,
+} from "./database";
 export async function addAttachment(recordId: string, file: File) {
   if (file.size > 15 * 1024 * 1024)
     throw new Error("El archivo supera 15 MB. Usa una foto más pequeña.");
@@ -33,7 +38,7 @@ export async function addAttachment(recordId: string, file: File) {
     blob,
     createdAt: new Date().toISOString(),
   };
-  await (await localDB()).put("photos", item);
+  await (await localDB()).put("photos", await storeAttachment(item));
   announce();
   return item;
 }

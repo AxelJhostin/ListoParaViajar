@@ -1,6 +1,7 @@
 import { localDB, announce, type Pending } from "./database";
 import { recordSchema, type TripRecord } from "@/domain/models";
 let flight: Promise<void> | null = null;
+let rerun = false;
 export async function acceptRemote(remote: TripRecord[]) {
   const db = await localDB(),
     tx = db.transaction(["records", "outbox"], "readwrite");
@@ -76,8 +77,16 @@ async function run() {
   announce();
 }
 export function syncNow() {
-  if (flight) return flight;
-  const action = () => run();
+  if (flight) {
+    rerun = true;
+    return flight;
+  }
+  const action = async () => {
+    do {
+      rerun = false;
+      await run();
+    } while (rerun);
+  };
   flight = (
     typeof navigator !== "undefined" && navigator.locks
       ? navigator.locks.request("trip-sync", action)
@@ -94,13 +103,11 @@ export async function resolveConflict(id: string, keepLocal: boolean) {
   if (op && "conflict" in op) {
     if (keepLocal) {
       const record = { ...op.record, version: op.conflict?.version || 0 };
-      await tx
-        .objectStore("outbox")
-        .put({
-          record,
-          baseVersion: record.version,
-          opId: crypto.randomUUID(),
-        });
+      await tx.objectStore("outbox").put({
+        record,
+        baseVersion: record.version,
+        opId: crypto.randomUUID(),
+      });
       await tx.objectStore("records").put(record);
     } else {
       await tx.objectStore("outbox").delete(id);

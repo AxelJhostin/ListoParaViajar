@@ -2,6 +2,9 @@
   "name": "listo-para-viajar",
   "version": "1.0.0",
   "private": true,
+  "overrides": {
+    "esbuild": "^0.28.2"
+  },
   "type": "module",
   "engines": {
     "node": ">=22.0.0"
@@ -20,6 +23,7 @@
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed.ts",
     "db:check": "tsx scripts/check-db.ts",
+    "test:db": "tsx scripts/test-db.ts",
     "format": "prettier --write src tests scripts docs README.md"
   },
   "dependencies": {

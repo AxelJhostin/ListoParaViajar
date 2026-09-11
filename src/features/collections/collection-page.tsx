@@ -39,6 +39,15 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
           ? "direction"
           : "person";
   const [direction, setDirection] = useState("");
+  const [extraFilter, setExtraFilter] = useState("");
+  const extraKey = kind === "packing" ? "category" : "stage";
+  const extraValues = Array.from(
+    new Set(
+      rows.map((r) =>
+        String((r.data as Record<string, unknown>)[extraKey] || ""),
+      ),
+    ),
+  ).filter(Boolean);
   const values = Array.from(
     new Set(
       rows.map((r) =>
@@ -52,6 +61,7 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
       return (
         JSON.stringify(d).toLowerCase().includes(search.toLowerCase()) &&
         (!filter || d[filterKey] === filter) &&
+        (!extraFilter || d[extraKey] === extraFilter) &&
         (!status ||
           (kind === "packing"
             ? d.done
@@ -76,6 +86,13 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
       d.status === "Realizada"
     );
   }).length;
+  const purchases = filtered as TripRecord<"purchase">[];
+  const packingPeople =
+    kind === "packing"
+      ? Array.from(
+          new Set(rows.map((r) => (r.data as DataMap["packing"]).person)),
+        )
+      : [];
   async function quick(r: TripRecord) {
     try {
       const d = { ...r.data } as Record<string, unknown>;
@@ -113,6 +130,22 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
             </Badge>
           </div>
           <Progress value={rows.length ? (completed / rows.length) * 100 : 0} />
+          {packingPeople.map((person) => {
+            const items = rows.filter(
+              (r) => (r.data as DataMap["packing"]).person === person,
+            );
+            const done = items.filter(
+              (r) => (r.data as DataMap["packing"]).done,
+            ).length;
+            return (
+              <div className="row spread small" key={person}>
+                <span>{person}</span>
+                <strong>
+                  {done} / {items.length} empacados
+                </strong>
+              </div>
+            );
+          })}
         </section>
       )}
       {kind === "document" && (
@@ -154,6 +187,19 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
         placeholder={`Buscar en ${config.title.toLowerCase()}…`}
       />
       <div className="filter-grid">
+        {["packing", "document"].includes(kind) && (
+          <Field label={kind === "packing" ? "Categoría" : "Etapa / trayecto"}>
+            <select
+              value={extraFilter}
+              onChange={(e) => setExtraFilter(e.target.value)}
+            >
+              <option value="">Todas</option>
+              {extraValues.map((v) => (
+                <option key={v}>{v}</option>
+              ))}
+            </select>
+          </Field>
+        )}
         {values.length > 0 && (
           <Field
             label={
@@ -197,6 +243,37 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
           </Field>
         )}
       </div>
+      {kind === "purchase" && (
+        <section
+          className="card stack compact"
+          aria-label="Totales de compras filtradas"
+        >
+          <div className="row spread">
+            <span>Estimado</span>
+            <strong>
+              {formatMoney(
+                purchases.reduce(
+                  (sum, r) => sum + (r.data.estimatedMinor ?? 0),
+                  0,
+                ),
+              )}
+            </strong>
+          </div>
+          <div className="row spread">
+            <span>Precio final registrado</span>
+            <strong>
+              {formatMoney(
+                purchases.reduce((sum, r) => sum + (r.data.finalMinor ?? 0), 0),
+              )}
+            </strong>
+          </div>
+          <p className="small muted">
+            {purchases.length} productos en esta selección ·{" "}
+            {purchases.filter((r) => r.data.finalMinor === null).length} sin
+            precio final. Valores informativos; no se suman otra vez a Gastos.
+          </p>
+        </section>
+      )}
       {!filtered.length ? (
         <Empty
           title="Todo comienza con una idea"

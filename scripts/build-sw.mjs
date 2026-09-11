@@ -46,7 +46,7 @@ self.addEventListener('fetch',event=>{
  const req=event.request,url=new URL(req.url);
  if(req.method!=='GET'||url.origin!==self.location.origin||url.pathname.startsWith('/api/'))return;
  if(req.mode==='navigate'){
-  event.respondWith((async()=>{const cache=await caches.open(CACHE);try{const response=await fetch(req,{signal:AbortSignal.timeout(4000)});if(response.ok)await cache.put(url.pathname,response.clone());return response;}catch{return (await cache.match(url.pathname))||(await cache.match('/'));}})());return;
+  event.respondWith((async()=>{const cache=await caches.open(CACHE);const stored=await cache.match(url.pathname);if(stored)return stored;try{return await fetch(req);}catch{return (await cache.match('/'));}})());return;
  }
  if(url.pathname.startsWith('/_next/static/')||PRECACHE.includes(url.pathname))event.respondWith((async()=>{const cache=await caches.open(CACHE);const stored=await cache.match(req);if(stored)return stored;const response=await fetch(req);if(response.ok)await cache.put(req,response.clone());return response;})());
 });

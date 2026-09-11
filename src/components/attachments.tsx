@@ -1,7 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Camera, ImagePlus, Download, Trash2, FileText } from "lucide-react";
-import { localDB, announce, type Attachment } from "@/local/database";
+import {
+  localDB,
+  announce,
+  readAttachment,
+  type Attachment,
+} from "@/local/database";
 import { addAttachment } from "@/local/attachments";
 import { useTrip } from "./trip-provider";
 function Preview({
@@ -55,13 +60,14 @@ function Preview({
 }
 export function Attachments({ recordId }: { recordId: string }) {
   const [files, setFiles] = useState<Attachment[]>([]),
-    [busy, setBusy] = useState(false);
+    [busy, setBusy] = useState(false),
+    [error, setError] = useState("");
   const { notify } = useTrip();
   useEffect(() => {
     const load = () =>
       void localDB()
         .then((db) => db.getAllFromIndex("photos", "by-record", recordId))
-        .then(setFiles);
+        .then((files) => setFiles(files.map(readAttachment)));
     load();
     window.addEventListener("trip-change", load);
     return () => window.removeEventListener("trip-change", load);
@@ -69,11 +75,15 @@ export function Attachments({ recordId }: { recordId: string }) {
   async function upload(list: FileList | null) {
     if (!list) return;
     setBusy(true);
+    setError("");
     try {
       for (const f of Array.from(list)) await addAttachment(recordId, f);
       notify("Adjunto guardado en este dispositivo.");
     } catch (e) {
-      notify(e instanceof Error ? e.message : "No se pudo guardar el archivo.");
+      const message =
+        e instanceof Error ? e.message : "No se pudo guardar el archivo.";
+      setError(message);
+      notify(message);
     } finally {
       setBusy(false);
     }
@@ -81,6 +91,11 @@ export function Attachments({ recordId }: { recordId: string }) {
   return (
     <section className="stack">
       <h3>Fotos y comprobantes</h3>
+      {error && (
+        <p role="alert" className="error-text">
+          {error}
+        </p>
+      )}
       <p className="callout small">
         Se guardan solo en este dispositivo. Descárgalos o exporta una copia
         para conservarlos.

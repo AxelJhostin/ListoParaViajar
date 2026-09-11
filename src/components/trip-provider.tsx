@@ -112,7 +112,13 @@ export function TripProvider({ children }: { children: ReactNode }) {
     void reload();
     setOnline(navigator.onLine);
     void syncNow();
-    void refreshRate();
+    void getRate().then((saved) => {
+      if (
+        !saved ||
+        (!saved.manual && Date.now() - Date.parse(saved.fetchedAt) > 3600000)
+      )
+        void refreshRate();
+    });
     const change = () => void reload(),
       reconnect = () => {
         setOnline(navigator.onLine);
@@ -151,11 +157,17 @@ export function TripProvider({ children }: { children: ReactNode }) {
     existing?: TripRecord<K>,
   ) {
     const parsed = schemas[kind].parse(data) as DataMap[K];
-    const current = existing ? await (await localDB()).get('records', existing.id) : undefined;
+    const current = existing
+      ? await (await localDB()).get("records", existing.id)
+      : undefined;
     // Acknowledgment may advance the version while the saved form stays open.
     // Rebase only if its baseline data is unchanged; real remote edits still conflict.
-    const baseVersion = current && existing && JSON.stringify(current.data) === JSON.stringify(existing.data)
-      ? current.version : existing?.version || 0;
+    const baseVersion =
+      current &&
+      existing &&
+      JSON.stringify(current.data) === JSON.stringify(existing.data)
+        ? current.version
+        : existing?.version || 0;
     const record = {
       id: existing?.id || crypto.randomUUID(),
       kind,

@@ -19,8 +19,12 @@ import {
 } from "@/domain/models";
 import { expenseTotal, formatMoney, convert } from "@/domain/money";
 import { downloadCsv } from "@/features/reports/export";
+import { useLocalAttachments } from "@/components/use-local-attachments";
 export function ExpenseList() {
   const records = useRecords("expense");
+  const attachments = useLocalAttachments();
+  const [onlyAttachments, setOnlyAttachments] = useState(false),
+    [originalCurrency, setOriginalCurrency] = useState("");
   const { remove, pending, notify } = useTrip();
   const [editing, setEditing] = useState<
       TripRecord<"expense"> | null | undefined
@@ -42,6 +46,8 @@ export function ExpenseList() {
         (!category || r.data.category === category) &&
         (!person || r.data.paidBy === person) &&
         (!method || r.data.paymentMethod === method) &&
+        (!onlyAttachments || !!attachments[r.id]) &&
+        (!originalCurrency || r.data.currency === originalCurrency) &&
         (!start || r.data.date >= start) &&
         (!end || r.data.date <= end),
     )
@@ -113,6 +119,24 @@ export function ExpenseList() {
       />
       {filters && (
         <section className="card filter-grid">
+          <Field label="Moneda original">
+            <select
+              value={originalCurrency}
+              onChange={(e) => setOriginalCurrency(e.target.value)}
+            >
+              <option value="">Todas</option>
+              <option>CAD</option>
+              <option>USD</option>
+            </select>
+          </Field>
+          <label className="checkbox-row">
+            <input
+              type="checkbox"
+              checked={onlyAttachments}
+              onChange={(e) => setOnlyAttachments(e.target.checked)}
+            />{" "}
+            Con adjunto local
+          </label>
           <Field label="Categoría">
             <select
               value={category}
@@ -165,6 +189,8 @@ export function ExpenseList() {
               setStart("");
               setEnd("");
               setSearch("");
+              setOnlyAttachments(false);
+              setOriginalCurrency("");
             }}
           >
             Limpiar filtros
@@ -202,6 +228,9 @@ export function ExpenseList() {
                   </span>
                   <span className="grow">
                     <strong>{r.data.description}</strong>
+                    {attachments[r.id] > 0 && (
+                      <small>{attachments[r.id]} adjuntos locales</small>
+                    )}
                     <small>
                       {r.data.date} · {r.data.category}
                     </small>

@@ -21,7 +21,7 @@
   --surface: #303534;
   --ink: #f5f3ef;
   --muted: #ccc0ba;
-  --primary: #ed2448;
+  --primary: #d9163b;
   --primary-dark: #ffb3b1;
   --mint: #244b38;
   --green: #bfead1;
@@ -40,7 +40,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.6;
 }
 button,
@@ -185,7 +185,7 @@ legend {
   gap: 12px;
 }
 .eyebrow {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 1.25px;
   color: var(--primary-dark);
@@ -207,7 +207,7 @@ legend {
   margin: 5px 0 8px;
 }
 .page-heading p.muted {
-  font-size: 13px;
+  font-size: 14px;
 }
 .button {
   display: inline-flex;
@@ -219,7 +219,7 @@ legend {
   border-radius: 12px;
   border: 0;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
   text-align: center;
   cursor: pointer;
 }
@@ -271,7 +271,7 @@ legend {
   padding: 4px 9px;
   border-radius: 50px;
   background: var(--surface);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
   border: 0;
@@ -317,7 +317,7 @@ legend {
   line-height: 1.4;
 }
 .brand small {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   color: var(--primary-dark);
@@ -351,7 +351,7 @@ legend {
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   flex: 1;
   padding: 8px 0;
@@ -382,7 +382,7 @@ legend {
   margin: 9px 0 10px;
 }
 .welcome p.muted {
-  font-size: 13px;
+  font-size: 14px;
 }
 .hero {
   position: relative;
@@ -430,7 +430,7 @@ legend {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .hero p.small {
   margin-bottom: 0;
@@ -468,14 +468,14 @@ legend {
   background: var(--surface);
   display: grid;
   place-items: center;
-  font-size: 11px;
+  font-size: 12px;
 }
 .route-dot.destination {
   background: var(--primary);
   color: white;
 }
 .route-line strong {
-  font-size: 10px;
+  font-size: 12px;
 }
 .route-line small {
   font-size: 14px;
@@ -492,11 +492,11 @@ legend {
   font-size: 12px;
 }
 .destination-row p {
-  font-size: 10px;
+  font-size: 12px;
 }
 .destination-row > .badge {
   margin-left: auto;
-  font-size: 9px;
+  font-size: 12px;
 }
 .summary-grid {
   gap: 10px;
@@ -514,7 +514,7 @@ legend {
   overflow-wrap: anywhere;
 }
 .summary-grid small {
-  font-size: 10px;
+  font-size: 12px;
 }
 .progress,
 .bar-track {
@@ -628,7 +628,7 @@ legend {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   min-width: 0;
 }
@@ -651,7 +651,7 @@ legend {
 .empty p {
   color: var(--muted);
   max-width: 270px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .empty-icon {
   font-size: 35px;
@@ -672,7 +672,7 @@ legend {
 .record-main small {
   display: block;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   margin-top: 3px;
 }
 .record-main strong {
@@ -720,7 +720,7 @@ legend {
   font-size: 14px;
 }
 .menu-item p {
-  font-size: 11px;
+  font-size: 12px;
 }
 .modal {
   position: fixed;
@@ -783,7 +783,7 @@ legend {
   padding: 8px;
   border-radius: 25px;
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 .category-grid {
@@ -802,7 +802,7 @@ legend {
   flex-direction: column;
   gap: 7px;
   padding: 8px 3px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .category-grid button.selected {
   background: var(--primary);
@@ -844,7 +844,7 @@ legend {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 10px;
+  font-size: 12px;
 }
 .attachment .row {
   gap: 0;
@@ -893,7 +893,7 @@ legend {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .theme-options {
   display: grid;
@@ -909,7 +909,7 @@ legend {
   border-radius: 12px;
   border: 2px solid transparent;
   background: var(--surface);
-  font-size: 11px;
+  font-size: 12px;
 }
 .theme-options button.selected {
   border-color: var(--primary-dark);
@@ -923,7 +923,7 @@ legend {
 }
 .conflict pre {
   white-space: pre-wrap;
-  font-size: 11px;
+  font-size: 12px;
   overflow-wrap: anywhere;
   max-height: 250px;
   overflow: auto;
@@ -977,7 +977,7 @@ legend {
   flex-wrap: wrap;
 }
 .report-detail strong {
-  font-size: 13px;
+  font-size: 14px;
 }
 .stat-bar .row {
   font-size: 12px;
@@ -1004,7 +1004,7 @@ legend {
   object-fit: contain;
 }
 .receipt-grid figcaption {
-  font-size: 9px;
+  font-size: 12px;
 }
 .skip-link {
   position: fixed;
@@ -1041,7 +1041,7 @@ legend {
     margin: 18px 0;
   }
   .desktop-intro p {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--muted);
   }
   .route-stamp {
@@ -1062,7 +1062,7 @@ legend {
     opacity: 0.7;
   }
   .route-stamp small {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 2px;
   }
   .bottom-nav {
@@ -1089,7 +1089,7 @@ legend {
     padding-right: 12px;
   }
   .topbar .badge {
-    font-size: 8px;
+    font-size: 12px;
   }
   .card {
     padding: 15px;
@@ -1098,13 +1098,16 @@ legend {
     font-size: 30px;
   }
   .destination-row > .badge {
-    font-size: 8px;
+    font-size: 12px;
   }
   .category-grid {
     gap: 5px;
   }
   .category-grid button {
-    font-size: 9px;
+    font-size: 12px;
+  }
+  .category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .amount {
     font-size: 27px;
@@ -1163,7 +1166,7 @@ legend {
     break-inside: auto;
   }
   body {
-    font-size: 11px;
+    font-size: 12px;
   }
   @page {
     size: A4;

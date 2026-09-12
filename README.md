@@ -65,14 +65,14 @@ El seed es repetible: usa UUID estables y `ON CONFLICT DO NOTHING`, por lo que n
 
 - Viajeros de referencia: Axel Hernández Menéndez, Sebastián Hernández Menéndez y Sumba Abuelita.
 - Salida de Manta: 14 de septiembre de 2026.
-- Llegada a Toronto: 15 de septiembre, aproximadamente 06:00 hora local.
-- Regreso a Ecuador: 25 de septiembre.
+- Llegada a Toronto: 15 de septiembre, 07:20 hora local (Avianca AV254).
+- Regreso a Manta: 25 de septiembre, 20:10 hora local (Avianca AV1696).
 - Seis trayectos de ida/regreso.
 - Doce registros iniciales de documentos, todos pendientes de revisión.
 - Cuatro campos de información vacíos: hospedaje, emergencia, seguro y notas.
 - Cero gastos, cero compras y cero artículos de equipaje inventados.
 
-La ciudad exacta en Colombia, aeropuertos, vuelos, terminales, horarios y hospedaje se completan desde la interfaz. Las listas de documentos son organización personal; no se precargan supuestos permisos migratorios. Montreal sigue sin confirmar.
+La conexión confirmada es Bogotá (El Dorado, Terminal 1 en los tramos indicados); los seis vuelos, aeropuertos y horarios se precargan desde el boleto de Axel. Se debe confirmar que Sebastián y Sumba viajen en los mismos vuelos. El hospedaje se completa desde la interfaz. Las listas de documentos son organización personal; no se precargan supuestos permisos migratorios. Montreal sigue sin confirmar.
 
 ## Arquitectura y organización
 

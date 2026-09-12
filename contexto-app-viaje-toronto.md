@@ -8,15 +8,15 @@ Bitácora familiar para organizar el primer viaje internacional de Axel y Sebast
 
 - Viajeros: Axel Hernández Menéndez, Sebastián Hernández Menéndez y Sumba Abuelita. No se inventa un nombre completo para la abuela.
 - Salida: lunes 14 de septiembre de 2026, desde Manta.
-- Ruta de ida: Manta → Quito → Colombia → Toronto. Regreso por la ruta inversa.
-- Llegada estimada a Toronto: martes 15 de septiembre, aproximadamente 06:00 hora local.
+- Ruta de ida confirmada para el boleto de Axel: Manta → Quito → Bogotá → Toronto. Regreso por la ruta inversa.
+- Llegada a Toronto: martes 15 de septiembre, 07:20 hora local, al aeropuerto Toronto Pearson (YYZ), Terminal 1.
 - Último día completo en Canadá: 24 de septiembre.
-- Regreso al país: 25 de septiembre. El contexto original mencionó salida por la mañana y llegada aproximadamente 20:00; los boletos deben confirmar los horarios.
+- Regreso a Manta: 25 de septiembre, 20:10 hora local. Seis vuelos Avianca están registrados en la aplicación; se debe confirmar que Sebastián y Sumba tengan el mismo itinerario.
 - Toronto es el destino confirmado. Montreal es una posible visita familiar, no una reserva ni excursión confirmada.
 - No hay itinerario turístico fijo; los familiares proponen actividades y habrá días libres.
 - Todos son mayores de edad. Todos pueden editar todos los registros; principalmente uno anotará y el resto consultará. Mamá y papá también pueden seguir las cuentas.
 
-La ciudad de la conexión en Colombia, aeropuertos, aerolíneas, vuelos, terminales y hospedaje siguen pendientes. Se dejan editables y vacíos, sin códigos aeroportuarios inventados.
+Bogotá es la conexión confirmada. Los aeropuertos, vuelos, terminales conocidas y horarios del boleto de Axel están registrados; el hospedaje sigue pendiente. Todos los datos de ruta permanecen editables.
 
 ## 2. Decisiones de alcance
 
@@ -91,7 +91,7 @@ Se muestra una advertencia si un vencimiento ingresado es anterior o igual al fi
 
 ### Ruta y vuelos
 
-Seis trayectos iniciales editables. Cada uno tiene descripción, dirección ida/regreso, orden, fecha, hora, aeropuerto, aerolínea, vuelo, terminal, zona horaria y notas. Se permiten datos incompletos y nuevas conexiones. No se presupone un aeropuerto concreto en Colombia ni Toronto.
+Seis trayectos iniciales editables, según el boleto de Axel: AV1695, AV8376, AV254, AV255, AV8373 y AV1696. Cada uno tiene descripción, dirección ida/regreso, orden, fecha, hora, aeropuerto, aerolínea, vuelo, terminal, zona horaria y notas. Se permiten nuevas conexiones. Los registros advierten confirmar que los demás pasajeros compartan este itinerario.
 
 ### Información importante
 

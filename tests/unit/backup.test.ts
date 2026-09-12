@@ -4,7 +4,7 @@ import { strToU8, zipSync } from "fflate";
 import { importBackup } from "@/local/backup";
 import { localDB, readAttachment, storeAttachment } from "@/local/database";
 import { initialRecords } from "@/domain/seed";
-import { defaults, expenseSchema } from "@/domain/models";
+import { defaults, expenseSchema, type TripRecord } from "@/domain/models";
 
 beforeEach(async () => {
   const db = await localDB();
@@ -112,4 +112,30 @@ it("keeps identity documents applicable for the whole trip", () => {
   expect(docs).toHaveLength(3);
   for (const doc of docs)
     expect(doc.data).toHaveProperty("stage", "Todo el viaje");
+});
+
+it("preloads the six confirmed itinerary legs", () => {
+  const legs = initialRecords().filter(
+    (record): record is TripRecord<"leg"> => record.kind === "leg",
+  );
+  expect(legs).toHaveLength(6);
+  expect(legs.map((leg) => leg.data.flight)).toEqual([
+    "AV1695",
+    "AV8376",
+    "AV254",
+    "AV255",
+    "AV8373",
+    "AV1696",
+  ]);
+  expect(legs[2]?.data).toMatchObject({
+    description: "Bogotá → Toronto",
+    date: "2026-09-15",
+    time: "00:05",
+    terminal: "Terminal 1 (BOG y YYZ)",
+  });
+  expect(legs[5]?.data).toMatchObject({
+    description: "Quito → Manta",
+    date: "2026-09-25",
+    time: "19:20",
+  });
 });

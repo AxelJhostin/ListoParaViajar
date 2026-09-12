@@ -157,10 +157,10 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
       )}
       {kind === "leg" && (
         <div className="callout small">
-          <strong>Salida 14 sep · Toronto 15 sep, aprox. 06:00</strong>
+          <strong>Salida 14 sep · Toronto 15 sep, 07:20 (hora local)</strong>
           <p>
-            Regreso a Ecuador: 25 sep. Aeropuertos, escalas exactas y horarios
-            pendientes de completar.
+            Regreso a Manta: 25 sep, 20:10. Revisa que los demás pasajeros
+            tengan los mismos vuelos antes de viajar.
           </p>
           <Link href="/documentos" className="text-button">
             Revisar documentos esenciales →

@@ -88,10 +88,10 @@ export function Dashboard() {
               <PlaneLanding size={14} /> Llegada a Toronto
             </small>
             <strong>Mar 15 sep 2026</strong>
-            <small>Aprox. 06:00 · hora local</small>
+            <small>07:20 · hora local</small>
           </div>
         </div>
-        <p className="small muted">Regreso a Ecuador · 25 septiembre</p>
+        <p className="small muted">Regreso a Manta · 25 septiembre, 20:10</p>
         <span className="hero-maple" aria-hidden="true">
           🍁
         </span>

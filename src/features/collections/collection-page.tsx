@@ -26,6 +26,10 @@ import {
   FlightReminderSettings,
   FlightTimer,
 } from "@/features/itinerary/flight-timer";
+import {
+  ConnectionSummary,
+  TravelerConfirmation,
+} from "@/features/itinerary/connection-summary";
 export function CollectionPage({ kind }: { kind: CollectionKind }) {
   const rows = useRecords(kind),
     { save, remove, notify, records } = useTrip();
@@ -33,11 +37,12 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
   const [editing, setEditing] = useState<TripRecord | null | undefined>(),
     [search, setSearch] = useState(""),
     [filter, setFilter] = useState(""),
-    [status, setStatus] = useState("");
+    [status, setStatus] = useState(""),
+    [confirming, setConfirming] = useState("");
   const filterKey =
     kind === "purchase"
       ? "recipient"
-      : kind === "idea"
+      : kind === "idea" || kind === "journal"
         ? "city"
         : kind === "leg"
           ? "direction"
@@ -116,6 +121,30 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
       notify("No se pudo guardar el cambio.");
     }
   }
+  async function toggleTraveler(
+    record: TripRecord<"leg">,
+    traveler: DataMap["leg"]["confirmedTravelers"][number],
+  ) {
+    const key = `${record.id}:${traveler}`;
+    setConfirming(key);
+    try {
+      const current = record.data.confirmedTravelers;
+      await save(
+        "leg",
+        {
+          ...record.data,
+          confirmedTravelers: current.includes(traveler)
+            ? current.filter((name) => name !== traveler)
+            : [...current, traveler],
+        },
+        record,
+      );
+    } catch {
+      notify("No se pudo guardar la confirmación.");
+    } finally {
+      setConfirming("");
+    }
+  }
   return (
     <div className="stack">
       <PageHeading
@@ -172,6 +201,7 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
             </Link>
           </div>
           <FlightReminderSettings />
+          <ConnectionSummary records={rows as TripRecord<"leg">[]} />
         </>
       )}
       <button className="button primary" onClick={() => setEditing(null)}>
@@ -186,7 +216,9 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
                 ? "idea"
                 : kind === "leg"
                   ? "trayecto"
-                  : "información"}
+                  : kind === "journal"
+                    ? "recuerdo"
+                    : "información"}
       </button>
       <SearchBox
         value={search}
@@ -212,7 +244,7 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
             label={
               kind === "purchase"
                 ? "Destinatario"
-                : kind === "idea"
+                : kind === "idea" || kind === "journal"
                   ? "Ciudad"
                   : kind === "leg"
                     ? "Dirección"
@@ -310,6 +342,8 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
                       d.direction,
                       d.stage,
                       d.category,
+                      kind === "journal" ? d.date : null,
+                      d.mood,
                     ]
                       .filter(Boolean)
                       .join(" · ")}
@@ -339,6 +373,13 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
                           .join(" · ") || "Información pendiente de completar"}
                       </p>
                       <FlightTimer record={r as TripRecord<"leg">} />
+                      <TravelerConfirmation
+                        record={r as TripRecord<"leg">}
+                        busy={confirming.startsWith(r.id)}
+                        onToggle={(traveler) =>
+                          void toggleTraveler(r as TripRecord<"leg">, traveler)
+                        }
+                      />
                     </>
                   )}
                   {d.notes ? (

@@ -497,6 +497,54 @@ legend {
   border-radius: 10px;
   background: var(--surface);
 }
+.connection-summary > svg,
+.connection-summary > .row svg {
+  color: var(--primary-dark);
+}
+.connection-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+.connection-row:last-of-type {
+  border-bottom: 0;
+}
+.connection-row > svg {
+  color: var(--green);
+  flex-shrink: 0;
+}
+.traveler-confirmation {
+  border-top: 1px solid color-mix(in srgb, var(--green) 18%, var(--line));
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.confirmation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.confirmation-pill {
+  min-height: 40px;
+  padding: 7px 5px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+.confirmation-pill.confirmed {
+  background: var(--mint);
+  border-color: color-mix(in srgb, var(--green) 25%, var(--line));
+  color: var(--green);
+}
 .route-line {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -634,6 +682,134 @@ legend {
 }
 .callout p {
   margin-top: 5px;
+}
+.command-center-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.command-center-link > svg {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.clock-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.clock-grid > div {
+  padding: 11px 6px;
+  border-radius: 12px;
+  background: var(--surface);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.clock-grid strong {
+  font-size: 14px;
+}
+.today-flight {
+  position: relative;
+  overflow: hidden;
+  border-color: color-mix(in srgb, var(--primary) 24%, var(--line));
+}
+.today-flight > .row svg {
+  color: var(--primary-dark);
+}
+.today-countdown {
+  display: block;
+  margin: 18px 0 4px;
+  font-size: 30px;
+  line-height: 1.25;
+  letter-spacing: -1px;
+  color: var(--primary-dark);
+}
+.today-action {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border-radius: 13px;
+  padding: 12px;
+}
+.today-action svg {
+  color: var(--green);
+  flex-shrink: 0;
+}
+.today-action div {
+  display: flex;
+  flex-direction: column;
+}
+.smart-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.smart-checklist button {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 11px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  font-size: 12px;
+}
+.smart-checklist button.checked {
+  background: color-mix(in srgb, var(--mint) 50%, var(--card));
+  color: var(--green);
+}
+.smart-checklist button small {
+  margin-left: auto;
+  color: var(--muted);
+}
+.today-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.today-links a {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-height: 112px;
+}
+.today-links svg {
+  color: var(--primary-dark);
+}
+.emergency-page > .callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.emergency-page > .callout svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.emergency-cover {
+  border-top: 5px solid var(--primary);
+}
+.emergency-row {
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+.emergency-row:last-child {
+  border-bottom: 0;
+}
+.document-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.document-group:last-child {
+  border-bottom: 0;
 }
 .total-card .eyebrow {
   margin-top: 22px;

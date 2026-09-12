@@ -8,16 +8,32 @@ import {
   Settings,
   MapPinned,
   ChevronRight,
+  CalendarClock,
+  ShieldAlert,
+  BookHeart,
 } from "lucide-react";
 import { PageHeading } from "@/components/ui";
 const links = [
+  [
+    "/hoy",
+    "Modo Hoy",
+    "Próximo vuelo, acciones y relojes locales",
+    CalendarClock,
+  ],
   [
     "/documentos",
     "Documentos esenciales",
     "Papeles listos para cada trayecto",
     FileCheck,
   ],
-  ["/ruta", "Ruta y vuelos", "Manta → Quito → Colombia → Toronto", Route],
+  ["/ruta", "Ruta y vuelos", "Manta → Quito → Bogotá → Toronto", Route],
+  [
+    "/emergencia",
+    "Paquete de emergencia",
+    "Vuelos, contactos y documentos en una vista",
+    ShieldAlert,
+  ],
+  ["/diario", "Diario del viaje", "Historias y fotos de cada día", BookHeart],
   ["/info", "Información del viaje", "Hospedaje, contactos y notas", MapPinned],
   ["/lugares", "Días libres", "Lugares e ideas por descubrir", Compass],
   ["/estadisticas", "Estadísticas", "Nuestra aventura en números", ChartColumn],

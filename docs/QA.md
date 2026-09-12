@@ -7,11 +7,11 @@ Fecha de revisión: 11 de septiembre de 2026. Esta guía distingue controles aut
 | Control                                | Resultado ejecutado                                                                                   |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | ESLint y TypeScript                    | Aprobados                                                                                             |
-| Vitest                                 | 33 pruebas aprobadas, 5 archivos                                                                      |
-| Build de producción                    | Aprobado; 12 rutas de aplicación precargadas y 71 recursos estáticos                                  |
-| Playwright                             | 23 aprobadas; 1 `fixme` en WebKit/macOS, explicado más abajo                                          |
-| Responsive                             | Las 12 rutas a 320 y 1280 px, en ambos motores; sin desbordamiento horizontal ni errores de ejecución |
-| PostgreSQL real                        | 7 comprobaciones aprobadas y rollback verificado                                                      |
+| Vitest                                 | 34 pruebas aprobadas, 5 archivos                                                                      |
+| Build de producción                    | Aprobado; 15 rutas de aplicación precargadas y 74 recursos estáticos                                  |
+| Playwright                             | 27 aprobadas; 1 `fixme` en WebKit/macOS, explicado más abajo                                          |
+| Responsive                             | Las 15 rutas a 320 y 1280 px, en ambos motores; sin desbordamiento horizontal ni errores de ejecución |
+| PostgreSQL real                        | 9 comprobaciones aprobadas y rollback verificado                                                      |
 | Dependencias                           | `npm audit`: 0 vulnerabilidades conocidas en la revisión                                              |
 | Migraciones                            | `db:generate`: sin diferencias; desarrollo conectado con datos iniciales                              |
 | Vercel / teléfonos físicos / CI remoto | No ejecutados; pendientes de Axel y la URL definitiva                                                 |
@@ -43,7 +43,8 @@ Los escenarios normales bloquean service workers e interceptan la API con un ser
 | Persistencia      | Registro y cola atómicos, fusión de ediciones pendientes, conservación ante descarga remota                                     |
 | Reintentos        | Confirmar únicamente la operación enviada, conservar edición durante envío, enviar un cambio agregado durante la descarga       |
 | Respaldos         | Recuperar registros/bytes, encolar, no duplicar ni sobrescribir existentes, rechazar archivos incompletos antes de escribir     |
-| Navegación        | Contexto real, ruta, documentos, equipaje y compras                                                                             |
+| Navegación        | Contexto real, ruta, modo Hoy, emergencia, diario, documentos, equipaje y compras                                               |
+| Itinerario        | Zonas horarias, cuenta regresiva, cuatro conexiones, confirmaciones por viajero y checklist contextual                          |
 | Gastos UI         | Registrar, recargar, editar, exportar, conservar una tasa histórica nula                                                        |
 | Conversor UI      | Dos direcciones y tasa manual                                                                                                   |
 | Archivos UI       | Adjuntar una imagen y restaurarla desde ZIP en un segundo navegador aislado                                                     |
@@ -68,9 +69,9 @@ DATABASE_URL_UNPOOLED=postgresql://USER:PASSWORD@QA-HOST/neondb?sslmode=verify-f
 npm run test:db
 ```
 
-El script llama al mismo servicio de sincronización usado por la API dentro de una transacción exterior. Comprueba creación, reintento idempotente, conflicto, actualización y borrado lógico. Fuerza rollback y verifica desde otra consulta que no quedan ni el registro ni sus confirmaciones: siete comprobaciones. No ejecutarlo con conexiones de producción.
+El script llama al mismo servicio de sincronización usado por la API dentro de una transacción exterior. Comprueba creación de gastos y diario, reintento idempotente, conflicto, actualización y borrado lógico. Fuerza rollback y verifica desde otra consulta que no quedan registros ni confirmaciones: nueve comprobaciones. No ejecutarlo con conexiones de producción.
 
-También se ejecutó `db:check` contra desarrollo y `db:generate`: migración aplicada, seed disponible y sin diferencias de esquema. La rama de producción no se migró ni se utilizó para pruebas.
+También se ejecutó `db:check` contra desarrollo y `db:generate`: migraciones aplicadas en desarrollo y QA, seed disponible y diario aceptado por la restricción de tipos. La rama de producción no se migró ni se utilizó para pruebas.
 
 ## Limitación reproducida en WebKit de macOS
 

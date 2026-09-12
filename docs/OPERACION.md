@@ -13,13 +13,16 @@ El código no está desplegado en Vercel. El README explica el procedimiento par
 ## Primer uso de la familia
 
 1. Entrar por la URL definitiva con internet y esperar a que termine la sincronización.
-2. Revisar Ruta y vuelos; agregar los datos de los boletos sin adivinar aeropuertos.
-3. Revisar Documentos por viajero y por etapa.
-4. Agregar hospedaje y contacto local en Información.
-5. Actualizar el conversor y verificar que muestra fuente y fecha.
-6. Instalar la PWA en cada teléfono y abrirla una vez con internet.
-7. Hacer una prueba de modo avión antes del aeropuerto.
-8. Descargar respaldo desde el celular que registra los comprobantes.
+2. Revisar Ruta y vuelos; confirmar a Sebastián y Sumba solo después de cotejar sus boletos.
+3. Completar la duración de los traslados de Manta y Toronto para calcular la hora de salida.
+4. Revisar Documentos por viajero y por etapa.
+5. Agregar hospedaje y contacto local en Información.
+6. Abrir Modo Hoy y revisar conexiones, checklist y relojes locales.
+7. Descargar el Paquete de emergencia en TXT o PDF y proteger esa copia.
+8. Actualizar el conversor y verificar que muestra fuente y fecha.
+9. Instalar la PWA en cada teléfono y abrirla una vez con internet.
+10. Hacer una prueba de modo avión antes del aeropuerto.
+11. Descargar respaldo desde el celular que registra los comprobantes.
 
 ## Registrar una compra sin duplicarla
 
@@ -65,6 +68,7 @@ Descargar un ZIP antes de cambiar de navegador/dominio y al terminar el viaje. I
 ## Mantenimiento
 
 - Cambiar la base mediante migraciones Drizzle revisadas en desarrollo.
+- Aplicar migraciones con `npm run db:migrate` en desarrollo y `npm run db:migrate:qa` en QA; producción queda a cargo de Axel.
 - Ejecutar QA antes de cambiar el build publicado.
 - Conservar `package-lock.json`; actualizar dependencias con revisión y pruebas.
 - Evitar comandos destructivos de base y limpieza de IndexedDB.

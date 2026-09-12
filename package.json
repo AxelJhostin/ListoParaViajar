@@ -21,6 +21,7 @@
     "qa": "npm run lint && npm run typecheck && npm test && npm run build",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/migrate.ts",
+    "db:migrate:qa": "tsx scripts/migrate.ts --env-file .env.e2e.local",
     "db:seed": "tsx scripts/seed.ts",
     "db:check": "tsx scripts/check-db.ts",
     "test:db": "tsx scripts/test-db.ts",

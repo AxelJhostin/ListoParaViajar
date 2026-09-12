@@ -10,6 +10,7 @@ export const categories = [
   "Salud",
   "Otros",
 ] as const;
+export const travelers = ["Axel", "Sebastián", "Abuelita"] as const;
 export const people = [
   "Axel",
   "Sebastián",
@@ -17,7 +18,6 @@ export const people = [
   "Mamá",
   "Papá",
 ] as const;
-export const travelers = people.slice(0, 3);
 export const paymentMethods = [
   "Efectivo",
   "Crédito",
@@ -34,6 +34,7 @@ export const kinds = [
   "idea",
   "leg",
   "info",
+  "journal",
 ] as const;
 export type Kind = (typeof kinds)[number];
 const text = z.string().trim().min(1, "Este campo es obligatorio").max(250);
@@ -116,11 +117,22 @@ export const legSchema = z.object({
     .default("Conexión"),
   airportLeadMinutes: z.number().int().min(0).max(720).default(45),
   travelMinutes: z.number().int().min(0).max(720).default(0),
+  arrivalDate: z.union([z.literal(""), dateOnly]).default(""),
+  arrivalTime: z.union([z.literal(""), timeOnly]).default(""),
+  arrivalTimezone: z.string().max(100).default(""),
+  confirmedTravelers: z.array(z.enum(travelers)).max(3).default([]),
   notes: note,
 });
 export const infoSchema = z.object({
   description: text,
   value: z.string().max(4000),
+  notes: note,
+});
+export const journalSchema = z.object({
+  description: text,
+  date: dateOnly,
+  city: text,
+  mood: z.enum(["Increíble", "Feliz", "Tranquilo", "Cansado", "Difícil"]),
   notes: note,
 });
 export const schemas = {
@@ -131,6 +143,7 @@ export const schemas = {
   idea: ideaSchema,
   leg: legSchema,
   info: infoSchema,
+  journal: journalSchema,
 };
 export type DataMap = { [K in Kind]: z.infer<(typeof schemas)[K]> };
 export type TripRecord<K extends Kind = Kind> = {
@@ -246,9 +259,20 @@ export function defaults<K extends Kind>(kind: K): DataMap[K] {
       departureType: "Traslado al aeropuerto",
       airportLeadMinutes: 120,
       travelMinutes: 0,
+      arrivalDate: "",
+      arrivalTime: "",
+      arrivalTimezone: "",
+      confirmedTravelers: [],
       notes: "",
     },
     info: { description: "", value: "", notes: "" },
+    journal: {
+      description: "",
+      date,
+      city: "Toronto",
+      mood: "Feliz",
+      notes: "",
+    },
   };
   return data[kind];
 }

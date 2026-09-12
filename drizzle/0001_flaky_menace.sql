@@ -1,0 +1,2 @@
+ALTER TABLE "trip_records" DROP CONSTRAINT "record_kind_valid";--> statement-breakpoint
+ALTER TABLE "trip_records" ADD CONSTRAINT "record_kind_valid" CHECK ("trip_records"."kind" in ('expense','packing','purchase','document','idea','leg','info','journal'));

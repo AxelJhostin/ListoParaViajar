@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
+  connectionWindows,
   formatCountdown,
   nextReminderThreshold,
   preparationTimes,
   zonedDateTimeToTimestamp,
 } from "@/domain/itinerary";
-import { defaults } from "@/domain/models";
+import { defaults, type DataMap } from "@/domain/models";
+import { initialRecords } from "@/domain/seed";
 
 describe("flight countdowns", () => {
   it("converts each airport's local departure time to the correct instant", () => {
@@ -50,5 +52,19 @@ describe("flight countdowns", () => {
   it("formats a live countdown", () => {
     expect(formatCountdown(90_000)).toBe("1 min · 30 s");
     expect(formatCountdown(0)).toBe("El vuelo ya salió");
+  });
+
+  it("calculates all four connection windows across local time zones", () => {
+    const legs = initialRecords()
+      .filter((record) => record.kind === "leg")
+      .map((record) => record.data as DataMap["leg"]);
+    expect(
+      connectionWindows(legs).map(({ minutes, level }) => [minutes, level]),
+    ).toEqual([
+      [220, "comfortable"],
+      [225, "comfortable"],
+      [115, "review"],
+      [100, "review"],
+    ]);
   });
 });

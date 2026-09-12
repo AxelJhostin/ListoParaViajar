@@ -41,7 +41,7 @@ Referencias conservadas: resumen, control de gastos, nuevo gasto, conversor y lo
 
 Identidad: rojo arce, verde bosque, fondo crema, títulos oscuros, ámbar para pendientes, Plus Jakarta Sans local, tarjetas redondeadas y navegación inferior. El modo oscuro conserva la identidad con colores de contraste comprobado.
 
-La navegación principal tiene Resumen, Gastos, Compras, Equipaje y Más. El conversor es accesible desde cualquier pantalla. Más contiene documentos, ruta, información, días libres, estadísticas, reportes y ajustes.
+La navegación principal tiene Resumen, Gastos, Compras, Equipaje y Más. El conversor es accesible desde cualquier pantalla. Más contiene Modo Hoy, documentos, ruta, paquete de emergencia, diario, información, días libres, estadísticas, reportes y ajustes.
 
 Controles con labels y foco visible; formularios de dinero con teclado decimal; diálogos que conservan el formulario ante errores; confirmación antes de eliminar o cerrar formularios modificados; soporte de safe areas. Los gráficos se acompañan de números y etiquetas.
 
@@ -97,6 +97,20 @@ Cada vuelo tiene cuenta regresiva en vivo. Los inicios de trayecto calculan la h
 
 La app recuerda 24 horas, 6 horas, 1 hora y 15 minutos antes. Los avisos internos y las notificaciones concedidas por el navegador se ejecutan localmente, sin proveedor externo. No se promete un aviso con la app completamente cerrada porque el sistema puede suspenderla.
 
+Las horas de llegada se guardan como campos estructurados. La app calcula cuatro ventanas de conexión y usa una orientación visual interna: cómoda desde 2 h 30 min, revisar desde 1 h 30 min y ajustada por debajo. No sustituye el criterio de la aerolínea. Cada vuelo permite confirmar por separado a Axel, Sebastián y Abuelita; inicialmente solo Axel está confirmado porque es el único boleto recibido.
+
+### Modo Hoy
+
+Centro de mando con el siguiente vuelo, cuenta regresiva, acción recomendada, relojes simultáneos de Ecuador, Bogotá y Toronto, y checklist contextual. Los estados de documentos, equipaje, traslados y confirmaciones se calculan desde datos compartidos. Check-in y carga de dispositivos son marcas locales de cada teléfono.
+
+### Paquete de emergencia
+
+Vista precargada y disponible offline con viajeros, vuelos, confirmaciones, información importante y estado documental. Permite imprimir/guardar PDF y descargar TXT. No incrusta adjuntos locales ni reemplaza originales; advierte proteger la copia por su posible contenido privado.
+
+### Diario del viaje
+
+Recuerdos compartidos con título, fecha, ciudad, estado de ánimo y notas. Acepta fotos locales mediante el mismo sistema de adjuntos. No se cargan recuerdos ficticios en el seed.
+
 ### Información importante
 
 Entradas editables para hospedaje en Toronto, contacto local, seguro y notas. Agregar campos propios con título, contenido, notas y archivos locales. Los valores desconocidos permanecen vacíos, no se muestran ejemplos como reservas reales.
@@ -142,7 +156,7 @@ PostgreSQL:
 | `trip_records`    | UUID, tipo de módulo, JSONB validado, versión, hora del servidor y borrado lógico |
 | `sync_operations` | UUID de operación, registro afectado y respuesta para reintentos idempotentes     |
 
-Tipos de registro: expense, packing, purchase, document, idea, leg, info. No hay tablas de presupuestos ni almacenamiento remoto de archivos. Los importes originales son centavos enteros, no flotantes.
+Tipos de registro: expense, packing, purchase, document, idea, leg, info y journal. No hay tablas de presupuestos ni almacenamiento remoto de archivos. Los importes originales son centavos enteros, no flotantes.
 
 El SQL preliminar multitabla del documento anterior fue reemplazado por este esquema, adecuado al viaje y con validación por módulo. La explicación y límites de escalabilidad están en [arquitectura](docs/ARQUITECTURA.md).
 
@@ -160,7 +174,7 @@ Reintentos al abrir, guardar, reconectar, volver a la pestaña y cada 15 segundo
 
 Los conflictos conservan ambas versiones para elegir en Ajustes. No gana el reloj del teléfono ni se descarta un cambio silenciosamente. Los borrados lógicos evitan resurrecciones automáticas.
 
-El service worker de producción precarga las doce rutas y los recursos necesarios, incluidas fuentes. Las páginas usan la caché de su compilación; los datos se rehidratan desde IndexedDB y se sincronizan por API, fuera de esa caché. Una nueva versión avisa antes de activarse.
+El service worker de producción precarga las quince rutas y los recursos necesarios, incluidas fuentes. Las páginas usan la caché de su compilación; los datos se rehidratan desde IndexedDB y se sincronizan por API, fuera de esa caché. Una nueva versión avisa antes de activarse.
 
 Limitaciones explícitas: primera apertura con internet; primera copia del viaje con servidor disponible; no hay sincronización garantizada con la app cerrada; enlaces externos requieren su propia conexión; caché del sistema y almacenamiento no son una garantía contra borrado del dispositivo.
 

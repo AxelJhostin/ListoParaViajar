@@ -68,6 +68,14 @@ export function departureTimestamp(leg: Leg) {
   return zonedDateTimeToTimestamp(leg.date, leg.time, leg.timezone);
 }
 
+export function arrivalTimestamp(leg: Leg) {
+  return zonedDateTimeToTimestamp(
+    leg.arrivalDate,
+    leg.arrivalTime,
+    leg.arrivalTimezone,
+  );
+}
+
 export function itineraryPreferences(leg: Leg) {
   const journeyStart = leg.order === 0 || leg.order === 3;
   const departureType =
@@ -136,4 +144,42 @@ export function reminderLabel(minutes: number) {
   if (minutes === 1440) return "24 horas";
   if (minutes >= 60) return `${minutes / 60} horas`;
   return `${minutes} minutos`;
+}
+
+export function formatMinutes(totalMinutes: number) {
+  const minutes = Math.max(0, Math.floor(totalMinutes));
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  return hours
+    ? `${hours} h ${rest ? `${rest} min` : ""}`.trim()
+    : `${rest} min`;
+}
+
+export function connectionWindows(legs: Leg[]) {
+  const ordered = [...legs].sort((a, b) => a.order - b.order);
+  return ordered.flatMap((leg, index) => {
+    const next = ordered[index + 1];
+    if (!next || next.direction !== leg.direction) return [];
+    if (itineraryPreferences(next).departureType !== "Conexión") return [];
+    const arrival = arrivalTimestamp(leg);
+    const departure = departureTimestamp(next);
+    if (arrival === null || departure === null || departure <= arrival)
+      return [];
+    const minutes = Math.floor((departure - arrival) / 60_000);
+    const level =
+      minutes >= 150 ? "comfortable" : minutes >= 90 ? "review" : "tight";
+    return [{ leg, next, minutes, level } as const];
+  });
+}
+
+export function nextUpcomingLeg(legs: Leg[], now = Date.now()) {
+  return (
+    [...legs]
+      .map((leg) => ({ leg, departure: departureTimestamp(leg) }))
+      .filter(
+        (item): item is { leg: Leg; departure: number } =>
+          item.departure !== null && item.departure >= now,
+      )
+      .sort((a, b) => a.departure - b.departure)[0] ?? null
+  );
 }

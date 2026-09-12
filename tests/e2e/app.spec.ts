@@ -69,6 +69,50 @@ test("converter works in both directions and manual rate", async ({ page }) => {
   await page.getByRole("button", { name: "Guardar tasa" }).click();
   await expect(page.getByText("96,00 CAD", { exact: true })).toBeVisible();
 });
+
+test("today mode, connection guidance and traveler confirmations work", async ({
+  page,
+}) => {
+  await page.goto("/hoy");
+  await expect(
+    page.getByRole("heading", { name: "Hoy en el viaje", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText("PRÓXIMO VUELO · AV1695")).toBeVisible();
+  await expect(page.getByText("Tres lugares, un mismo viaje")).toBeVisible();
+  await page.goto("/ruta");
+  await expect(page.getByText("3 h 40 min disponibles")).toBeVisible();
+  const sebastian = page
+    .getByRole("button", { name: "Sebastián", exact: true })
+    .first();
+  await expect(sebastian).toHaveAttribute("aria-pressed", "false");
+  await sebastian.click();
+  await expect(sebastian).toHaveAttribute("aria-pressed", "true");
+});
+
+test("emergency package downloads and journal entries persist", async ({
+  page,
+}) => {
+  await page.goto("/emergencia");
+  await expect(
+    page.getByRole("heading", { name: "Paquete de emergencia", exact: true }),
+  ).toBeVisible();
+  const download = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Descargar TXT" }).click();
+  expect((await download).suggestedFilename()).toBe(
+    "paquete-emergencia-viaje.txt",
+  );
+  await page.goto("/diario");
+  await page.getByRole("button", { name: "Agregar recuerdo" }).click();
+  await page.getByLabel("Título del recuerdo").fill("Primer día en Toronto");
+  await page.getByLabel("Ciudad").fill("Toronto");
+  await page.getByLabel("Notas").fill("Llegamos felices y con mucha emoción.");
+  await page.getByRole("button", { name: "Guardar", exact: true }).click();
+  await page.getByRole("button", { name: "Listo", exact: true }).click();
+  await page.reload();
+  await expect(
+    page.getByRole("heading", { name: "Primer día en Toronto" }),
+  ).toBeVisible();
+});
 test("packing ida/regreso and purchase recipients persist", async ({
   page,
 }) => {
@@ -321,6 +365,9 @@ test("all routes fit small phones and desktop without runtime errors", async ({
       "/equipaje",
       "/documentos",
       "/ruta",
+      "/hoy",
+      "/emergencia",
+      "/diario",
       "/info",
       "/lugares",
       "/estadisticas",

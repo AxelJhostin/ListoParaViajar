@@ -1,6 +1,6 @@
 # Listo Para Viajar 🍁
 
-Bitácora familiar para el viaje **Manta → Quito → Colombia → Toronto**, del 14 al 25 de septiembre de 2026. Aplicación web instalable, pensada para celulares, con registros compartidos en Neon y adjuntos que permanecen en cada dispositivo.
+Bitácora familiar para el viaje **Manta → Quito → Bogotá → Toronto**, del 14 al 25 de septiembre de 2026. Aplicación web instalable, pensada para celulares, con registros compartidos en Neon y adjuntos que permanecen en cada dispositivo.
 
 El diseño se basa en la exportación de Google Stitch aprobada por Axel, `Canada Explorer Heritage`: fondos crema, rojo arce, verde bosque, tarjetas redondeadas y tipografía Plus Jakarta Sans.
 
@@ -43,12 +43,15 @@ Detener previamente cualquier servidor que ocupe el puerto 3000. El service work
 | Pantalla     | Funciones                                                                                             |
 | ------------ | ----------------------------------------------------------------------------------------------------- |
 | Resumen      | Cuenta regresiva real, fechas, ruta, viajeros, progreso y accesos rápidos                             |
+| Modo Hoy     | Próximo vuelo, acción recomendada, checklist inteligente y relojes de tres ciudades                   |
 | Gastos       | Crear, editar, eliminar, buscar, filtros de fecha/categoría/persona/método/moneda/adjuntos; CAD y USD |
 | Conversor    | CAD ⇄ USD, tasa automática, última tasa offline, tasa manual y montos rápidos                         |
 | Equipaje     | Ida/regreso, responsable, categoría, cantidad, notas, estado y progreso                               |
 | Compras      | Destinatario, precio estimado/final, prioridad, estado y vínculo opcional con un gasto                |
 | Documentos   | Lista por viajero y etapa, pendiente/revisado/listo, vencimiento, notas y adjuntos                    |
 | Ruta         | Seis vuelos, temporizador, avisos locales, salida recomendada, márgenes editables y terminales        |
+| Emergencia   | Vista offline imprimible y descarga TXT con vuelos, contactos y estado documental                     |
+| Diario       | Recuerdos compartidos por fecha, ciudad y ánimo; notas y fotografías locales                          |
 | Información  | Hospedaje, contacto local, seguro y otros datos agregables después                                    |
 | Días libres  | Ciudad, prioridad, dirección, enlace, notas y estado; Montreal marcado como tentativo                 |
 | Estadísticas | Gastos por categoría, día, persona y método; progreso de equipaje/documentos/compras                  |
@@ -85,6 +88,9 @@ src/
   domain/              Tipos, validación Zod, dinero y datos iniciales
   features/
     dashboard/         Resumen y contexto del viaje
+    today/             Centro de mando, checklist contextual y relojes locales
+    itinerary/         Temporizadores, conexiones y confirmación de pasajeros
+    emergency/         Paquete offline imprimible y descargable
     expenses/          Formulario y listado de gastos
     collections/       Formularios/listas configurables por módulo
     converter/         Conversor accesible desde todas las pantallas
@@ -178,7 +184,7 @@ npm run test:e2e      # Flujos completos en Chromium móvil y WebKit móvil
 
 Los E2E normales interceptan las APIs para usar datos aislados y reproducibles; no insertan recibos ficticios en Neon. El caso offline usa el service worker real. La verificación real de PostgreSQL y sus transacciones se registra por separado. La guía [QA](docs/QA.md) distingue pruebas ejecutadas de la validación pendiente en teléfonos físicos.
 
-Última revisión: **33 pruebas unitarias, 23 E2E y 7 comprobaciones PostgreSQL aprobadas**, además de lint, tipos y build. La navegación offline WebKit/macOS tiene un `fixme` por un error reproducido también sin la app; **iPhone instalado y modo avión aún requieren comprobación física**. No se considera una prueba aprobada. CI está configurado, pero todavía no ejecutado en GitHub.
+Última revisión: **34 pruebas unitarias, 27 E2E y 9 comprobaciones PostgreSQL aprobadas**, además de lint, tipos y build. La navegación offline WebKit/macOS tiene un `fixme` por un error reproducido también sin la app; **iPhone instalado y modo avión aún requieren comprobación física**. No se considera una prueba aprobada. CI está configurado, pero todavía no ejecutado en GitHub.
 
 Para probar PostgreSQL real, configurar `.env.e2e.local` con las conexiones de una rama de QA, según la [guía de pruebas](docs/QA.md), y ejecutar `npm run test:db`. El script verifica rollback de sus datos. No utilizar producción.
 

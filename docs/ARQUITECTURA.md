@@ -70,9 +70,9 @@ El respaldo ZIP contiene `backup.json` y bytes de adjuntos con UUID. La importac
 
 ## PWA
 
-El build genera un service worker con identificador distinto por compilación. Precarga las doce rutas, sus JS/CSS/fuentes y los iconos. La navegación usa enlaces de documento para que una ruta nunca visitada pueda abrirse con el HTML precargado sin depender de un request React Server Components pendiente.
+El build genera un service worker con identificador distinto por compilación. Precarga las quince rutas, sus JS/CSS/fuentes y los iconos. La navegación usa enlaces de documento para que una ruta nunca visitada pueda abrirse con el HTML precargado sin depender de un request React Server Components pendiente.
 
-Los recursos estáticos y las doce rutas conocidas usan primero la caché de su compilación. Así una navegación offline es inmediata y no mezcla HTML nuevo con recursos de otra versión. Las rutas desconocidas intentan la red. `/api/*` queda fuera del service worker; la persistencia de datos corresponde a IndexedDB. Una versión nueva espera y muestra una acción para recargar; no borra stores locales.
+Los recursos estáticos y las quince rutas conocidas usan primero la caché de su compilación. Así una navegación offline es inmediata y no mezcla HTML nuevo con recursos de otra versión. Las rutas desconocidas intentan la red. `/api/*` queda fuera del service worker; la persistencia de datos corresponde a IndexedDB. Una versión nueva espera y muestra una acción para recargar; no borra stores locales.
 
 Los temporizadores convierten la fecha y hora local de cada vuelo mediante su zona IANA (`America/Guayaquil`, `America/Bogota` o `America/Toronto`). Los márgenes de aeropuerto y traslado viven en el registro compartido; el permiso y los umbrales ya entregados viven en el dispositivo. Un monitor activo comprueba los umbrales al abrir, recuperar foco y cada 30 segundos. No existe scheduler remoto ni push; una app suspendida o cerrada no puede prometer ejecución.
 

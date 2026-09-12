@@ -19,6 +19,7 @@ const pool = new Pool({
 });
 const rollback = new Error("QA_ROLLBACK");
 const id = crypto.randomUUID();
+const journalId = crypto.randomUUID();
 let passed = false;
 try {
   await drizzle(pool).transaction(async (tx) => {
@@ -61,6 +62,26 @@ try {
     );
     assert.equal(deleted.record?.deleted, true);
     assert.equal(deleted.record?.version, 3);
+    const journal = await applyMutation(
+      {
+        opId: crypto.randomUUID(),
+        record: {
+          id: journalId,
+          kind: "journal",
+          data: {
+            ...defaults("journal"),
+            description: "QA journal rollback",
+          },
+          version: 0,
+          updatedAt: new Date().toISOString(),
+          deleted: false,
+        },
+        baseVersion: 0,
+      },
+      tx,
+    );
+    assert.equal(journal.record?.kind, "journal");
+    assert.equal(journal.record?.version, 1);
     passed = true;
     throw rollback;
   });
@@ -68,12 +89,12 @@ try {
   if (error !== rollback) throw error;
 } finally {
   const after = await pool.query(
-    "select count(*)::int n from trip_records where id=$1",
-    [id],
+    "select count(*)::int n from trip_records where id=any($1::uuid[])",
+    [[id, journalId]],
   );
   const ops = await pool.query(
-    "select count(*)::int n from sync_operations where record_id=$1",
-    [id],
+    "select count(*)::int n from sync_operations where record_id=any($1::uuid[])",
+    [[id, journalId]],
   );
   await pool.end();
   assert.equal(after.rows[0].n, 0);
@@ -81,5 +102,5 @@ try {
 }
 assert.equal(passed, true);
 console.log(
-  "7 comprobaciones PostgreSQL OK: creación, idempotencia, conflicto, edición, borrado lógico y rollback verificado de registros y confirmaciones.",
+  "9 comprobaciones PostgreSQL OK: creación, diario, idempotencia, conflicto, edición, borrado lógico y rollback verificado.",
 );

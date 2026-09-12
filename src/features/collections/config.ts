@@ -1,6 +1,6 @@
 import { people } from "@/domain/models";
 export type CollectionKind =
-  "packing" | "purchase" | "document" | "idea" | "leg" | "info";
+  "packing" | "purchase" | "document" | "idea" | "leg" | "info" | "journal";
 type FormField = {
   key: string;
   label: string;
@@ -166,6 +166,12 @@ export const collections: Record<
         label: "Traslado estimado al aeropuerto (minutos)",
         type: "number",
       },
+      { key: "arrivalDate", label: "Fecha local de llegada", type: "date" },
+      { key: "arrivalTime", label: "Hora local de llegada", type: "time" },
+      {
+        key: "arrivalTimezone",
+        label: "Zona horaria de llegada (ej. America/Toronto)",
+      },
       { key: "airport", label: "Aeropuerto" },
       { key: "airline", label: "Aerolínea / transporte" },
       { key: "flight", label: "Número de vuelo" },
@@ -179,6 +185,21 @@ export const collections: Record<
     fields: [
       { key: "description", label: "Nombre", required: true },
       { key: "value", label: "Información", type: "textarea" },
+    ],
+  },
+  journal: {
+    title: "Diario del viaje",
+    singular: "Recuerdo del día",
+    body: "Momentos, historias y fotos para volver a vivir la aventura.",
+    fields: [
+      { key: "description", label: "Título del recuerdo", required: true },
+      { key: "date", label: "Fecha", type: "date", required: true },
+      { key: "city", label: "Ciudad", required: true },
+      {
+        key: "mood",
+        label: "Cómo se sintió el día",
+        options: ["Increíble", "Feliz", "Tranquilo", "Cansado", "Difícil"],
+      },
     ],
   },
 };

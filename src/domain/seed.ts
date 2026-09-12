@@ -12,7 +12,7 @@ export function initialRecords(): TripRecord[] {
       deleted: false,
     } as TripRecord);
   }
-  const route = [
+  const route: Array<Partial<DataMap["leg"]>> = [
     {
       description: "Manta → Quito",
       date: "2026-09-14",
@@ -23,6 +23,10 @@ export function initialRecords(): TripRecord[] {
       timezone: "America/Guayaquil",
       departureType: "Traslado al aeropuerto" as const,
       airportLeadMinutes: 120,
+      arrivalDate: "2026-09-14",
+      arrivalTime: "15:10",
+      arrivalTimezone: "America/Guayaquil",
+      confirmedTravelers: ["Axel"],
       notes:
         "Llega 15:10 · duración 00:50. Horario según el boleto de Axel; confirmar los demás pasajeros.",
     },
@@ -37,6 +41,10 @@ export function initialRecords(): TripRecord[] {
       timezone: "America/Guayaquil",
       departureType: "Conexión" as const,
       airportLeadMinutes: 45,
+      arrivalDate: "2026-09-14",
+      arrivalTime: "20:20",
+      arrivalTimezone: "America/Bogota",
+      confirmedTravelers: ["Axel"],
       notes:
         "Llega 20:20 · duración 01:30. Horario según el boleto de Axel; confirmar los demás pasajeros.",
     },
@@ -51,6 +59,10 @@ export function initialRecords(): TripRecord[] {
       timezone: "America/Bogota",
       departureType: "Conexión" as const,
       airportLeadMinutes: 45,
+      arrivalDate: "2026-09-15",
+      arrivalTime: "07:20",
+      arrivalTimezone: "America/Toronto",
+      confirmedTravelers: ["Axel"],
       notes:
         "Llega 07:20 · duración 06:15. Horario según el boleto de Axel; confirmar los demás pasajeros.",
     },
@@ -65,6 +77,10 @@ export function initialRecords(): TripRecord[] {
       timezone: "America/Toronto",
       departureType: "Traslado al aeropuerto" as const,
       airportLeadMinutes: 180,
+      arrivalDate: "2026-09-25",
+      arrivalTime: "14:05",
+      arrivalTimezone: "America/Bogota",
+      confirmedTravelers: ["Axel"],
       notes:
         "Llega 14:05 · duración 06:10. Horario según el boleto de Axel; confirmar los demás pasajeros.",
     },
@@ -79,6 +95,10 @@ export function initialRecords(): TripRecord[] {
       timezone: "America/Bogota",
       departureType: "Conexión" as const,
       airportLeadMinutes: 45,
+      arrivalDate: "2026-09-25",
+      arrivalTime: "17:40",
+      arrivalTimezone: "America/Guayaquil",
+      confirmedTravelers: ["Axel"],
       notes:
         "Llega 17:40 · duración 01:40. Horario según el boleto de Axel; confirmar los demás pasajeros.",
     },
@@ -92,6 +112,10 @@ export function initialRecords(): TripRecord[] {
       timezone: "America/Guayaquil",
       departureType: "Conexión" as const,
       airportLeadMinutes: 45,
+      arrivalDate: "2026-09-25",
+      arrivalTime: "20:10",
+      arrivalTimezone: "America/Guayaquil",
+      confirmedTravelers: ["Axel"],
       notes:
         "Llega 20:10 · duración 00:50. Horario según el boleto de Axel; confirmar los demás pasajeros.",
     },

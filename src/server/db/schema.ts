@@ -28,7 +28,7 @@ export const records = pgTable(
     check("record_version_positive", sql`${t.version}>0`),
     check(
       "record_kind_valid",
-      sql`${t.kind} in ('expense','packing','purchase','document','idea','leg','info')`,
+      sql`${t.kind} in ('expense','packing','purchase','document','idea','leg','info','journal')`,
     ),
   ],
 );

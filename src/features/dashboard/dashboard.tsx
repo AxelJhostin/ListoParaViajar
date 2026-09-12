@@ -11,6 +11,8 @@ import {
   PlaneLanding,
   CheckCircle2,
   HelpCircle,
+  CalendarClock,
+  ChevronRight,
 } from "lucide-react";
 import { useRecords, useTrip } from "@/components/trip-provider";
 import { Badge, Progress } from "@/components/ui";
@@ -96,6 +98,19 @@ export function Dashboard() {
           🍁
         </span>
       </section>
+      <Link href="/hoy" className="card command-center-link">
+        <span className="timer-icon" aria-hidden="true">
+          <CalendarClock size={21} />
+        </span>
+        <div className="grow">
+          <p className="eyebrow">MODO HOY</p>
+          <strong>Ver qué toca hacer ahora</strong>
+          <p className="small muted">
+            Próximo vuelo, hora recomendada, checklist y relojes locales.
+          </p>
+        </div>
+        <ChevronRight size={20} aria-hidden="true" />
+      </Link>
       <Link href="/ruta" className="card route-card">
         <p className="eyebrow">
           ITINERARIO DE CONEXIONES <MapPin size={16} />

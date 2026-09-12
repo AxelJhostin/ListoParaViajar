@@ -35,6 +35,9 @@ export function AppShell({ children }: { children: ReactNode }) {
     "/estadisticas": "Estadísticas",
     "/ajustes": "Ajustes",
     "/reportes": "Reportes",
+    "/hoy": "Hoy",
+    "/emergencia": "Emergencia",
+    "/diario": "Diario",
   };
   const title =
     nav.find((n) => n.path === path)?.label || titles[path] || "El viaje";

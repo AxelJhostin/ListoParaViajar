@@ -74,6 +74,8 @@ El build genera un service worker con identificador distinto por compilación. P
 
 Los recursos estáticos y las doce rutas conocidas usan primero la caché de su compilación. Así una navegación offline es inmediata y no mezcla HTML nuevo con recursos de otra versión. Las rutas desconocidas intentan la red. `/api/*` queda fuera del service worker; la persistencia de datos corresponde a IndexedDB. Una versión nueva espera y muestra una acción para recargar; no borra stores locales.
 
+Los temporizadores convierten la fecha y hora local de cada vuelo mediante su zona IANA (`America/Guayaquil`, `America/Bogota` o `America/Toronto`). Los márgenes de aeropuerto y traslado viven en el registro compartido; el permiso y los umbrales ya entregados viven en el dispositivo. Un monitor activo comprueba los umbrales al abrir, recuperar foco y cada 30 segundos. No existe scheduler remoto ni push; una app suspendida o cerrada no puede prometer ejecución.
+
 Sin descarga inicial no existe soporte offline. Al cambiar de dominio cambian el service worker y los stores. Chrome/WebKit de escritorio no sustituyen una prueba de instalación en teléfonos físicos.
 
 ## Diseño

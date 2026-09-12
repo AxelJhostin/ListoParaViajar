@@ -151,6 +151,21 @@ export const collections: Record<
       { key: "date", label: "Fecha local de salida", type: "date" },
       { key: "time", label: "Hora local de salida", type: "time" },
       { key: "timezone", label: "Zona horaria (ej. America/Guayaquil)" },
+      {
+        key: "departureType",
+        label: "Tipo de salida",
+        options: ["Traslado al aeropuerto", "Conexión"],
+      },
+      {
+        key: "airportLeadMinutes",
+        label: "Anticipación recomendada (minutos)",
+        type: "number",
+      },
+      {
+        key: "travelMinutes",
+        label: "Traslado estimado al aeropuerto (minutos)",
+        type: "number",
+      },
       { key: "airport", label: "Aeropuerto" },
       { key: "airline", label: "Aerolínea / transporte" },
       { key: "flight", label: "Número de vuelo" },

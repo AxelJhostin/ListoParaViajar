@@ -20,7 +20,11 @@ export function initialRecords(): TripRecord[] {
       airport: "Manta Eloy Alfaro Intl (MEC) → Quito Mariscal Sucre Intl (UIO)",
       airline: "Avianca",
       flight: "AV1695",
-      notes: "Llega 15:10 · duración 00:50. Horario según el boleto de Axel; confirmar los demás pasajeros.",
+      timezone: "America/Guayaquil",
+      departureType: "Traslado al aeropuerto" as const,
+      airportLeadMinutes: 120,
+      notes:
+        "Llega 15:10 · duración 00:50. Horario según el boleto de Axel; confirmar los demás pasajeros.",
     },
     {
       description: "Quito → Bogotá",
@@ -30,7 +34,11 @@ export function initialRecords(): TripRecord[] {
       airline: "Avianca",
       flight: "AV8376",
       terminal: "Llegada: Terminal 1 (BOG)",
-      notes: "Llega 20:20 · duración 01:30. Horario según el boleto de Axel; confirmar los demás pasajeros.",
+      timezone: "America/Guayaquil",
+      departureType: "Conexión" as const,
+      airportLeadMinutes: 45,
+      notes:
+        "Llega 20:20 · duración 01:30. Horario según el boleto de Axel; confirmar los demás pasajeros.",
     },
     {
       description: "Bogotá → Toronto",
@@ -40,8 +48,11 @@ export function initialRecords(): TripRecord[] {
       airline: "Avianca",
       flight: "AV254",
       terminal: "Terminal 1 (BOG y YYZ)",
-      timezone: "Salida Bogotá UTC-5 · llegada Toronto UTC-4",
-      notes: "Llega 07:20 · duración 06:15. Horario según el boleto de Axel; confirmar los demás pasajeros.",
+      timezone: "America/Bogota",
+      departureType: "Conexión" as const,
+      airportLeadMinutes: 45,
+      notes:
+        "Llega 07:20 · duración 06:15. Horario según el boleto de Axel; confirmar los demás pasajeros.",
     },
     {
       description: "Toronto → Bogotá",
@@ -51,8 +62,11 @@ export function initialRecords(): TripRecord[] {
       airline: "Avianca",
       flight: "AV255",
       terminal: "Terminal 1 (YYZ y BOG)",
-      timezone: "Salida Toronto UTC-4 · llegada Bogotá UTC-5",
-      notes: "Llega 14:05 · duración 06:10. Horario según el boleto de Axel; confirmar los demás pasajeros.",
+      timezone: "America/Toronto",
+      departureType: "Traslado al aeropuerto" as const,
+      airportLeadMinutes: 180,
+      notes:
+        "Llega 14:05 · duración 06:10. Horario según el boleto de Axel; confirmar los demás pasajeros.",
     },
     {
       description: "Bogotá → Quito",
@@ -62,7 +76,11 @@ export function initialRecords(): TripRecord[] {
       airline: "Avianca",
       flight: "AV8373",
       terminal: "Salida: Terminal 1 (BOG)",
-      notes: "Llega 17:40 · duración 01:40. Horario según el boleto de Axel; confirmar los demás pasajeros.",
+      timezone: "America/Bogota",
+      departureType: "Conexión" as const,
+      airportLeadMinutes: 45,
+      notes:
+        "Llega 17:40 · duración 01:40. Horario según el boleto de Axel; confirmar los demás pasajeros.",
     },
     {
       description: "Quito → Manta",
@@ -71,7 +89,11 @@ export function initialRecords(): TripRecord[] {
       airport: "Quito Mariscal Sucre Intl (UIO) → Manta Eloy Alfaro Intl (MEC)",
       airline: "Avianca",
       flight: "AV1696",
-      notes: "Llega 20:10 · duración 00:50. Horario según el boleto de Axel; confirmar los demás pasajeros.",
+      timezone: "America/Guayaquil",
+      departureType: "Conexión" as const,
+      airportLeadMinutes: 45,
+      notes:
+        "Llega 20:10 · duración 00:50. Horario según el boleto de Axel; confirmar los demás pasajeros.",
     },
   ];
   route.forEach((leg, index) =>

@@ -48,7 +48,7 @@ Detener previamente cualquier servidor que ocupe el puerto 3000. El service work
 | Equipaje     | Ida/regreso, responsable, categoría, cantidad, notas, estado y progreso                               |
 | Compras      | Destinatario, precio estimado/final, prioridad, estado y vínculo opcional con un gasto                |
 | Documentos   | Lista por viajero y etapa, pendiente/revisado/listo, vencimiento, notas y adjuntos                    |
-| Ruta         | Seis trayectos editables, aeropuerto, fecha/hora, zona horaria, aerolínea, vuelo, terminal            |
+| Ruta         | Seis vuelos, temporizador, avisos locales, salida recomendada, márgenes editables y terminales        |
 | Información  | Hospedaje, contacto local, seguro y otros datos agregables después                                    |
 | Días libres  | Ciudad, prioridad, dirección, enlace, notas y estado; Montreal marcado como tentativo                 |
 | Estadísticas | Gastos por categoría, día, persona y método; progreso de equipaje/documentos/compras                  |
@@ -73,6 +73,8 @@ El seed es repetible: usa UUID estables y `ON CONFLICT DO NOTHING`, por lo que n
 - Cero gastos, cero compras y cero artículos de equipaje inventados.
 
 La conexión confirmada es Bogotá (El Dorado, Terminal 1 en los tramos indicados); los seis vuelos, aeropuertos y horarios se precargan desde el boleto de Axel. Se debe confirmar que Sebastián y Sumba viajen en los mismos vuelos. El hospedaje se completa desde la interfaz. Las listas de documentos son organización personal; no se precargan supuestos permisos migratorios. Montreal sigue sin confirmar.
+
+Cada vuelo calcula su instante real desde la fecha, hora local y zona IANA del aeropuerto de salida. El margen inicial es 120 minutos en Manta, 180 minutos en Toronto y 45 minutos para estar en la puerta durante conexiones. Todos son editables. Cuando se agrega la duración del traslado, la app calcula también a qué hora salir del alojamiento.
 
 ## Arquitectura y organización
 
@@ -128,6 +130,12 @@ La sincronización se intenta al abrir, guardar, recuperar conexión, volver a l
 
 El teléfono puede suspender aplicaciones en segundo plano. La sincronización no está garantizada con la PWA cerrada: basta abrirla con internet para reintentar. La primera apertura necesita conexión para descargar la app; la primera copia compartida requiere que Neon responda.
 
+## Temporizadores y avisos de vuelo
+
+Ruta y vuelos muestra una cuenta regresiva en vivo y la hora recomendada para llegar al aeropuerto o estar en la puerta. Los avisos se disparan a las 24 horas, 6 horas, 1 hora y 15 minutos. Cada umbral se registra localmente para evitar repeticiones.
+
+Los avisos dentro de la app funcionan mientras esta siga abierta. Si el navegador permite notificaciones y el usuario concede permiso, se muestra además un aviso del dispositivo. No hay proveedor de push ni tarea remota: el sistema operativo puede suspender el navegador, así que **no se garantiza ningún aviso con la aplicación completamente cerrada**. Deben conservarse también las alarmas o recordatorios habituales del teléfono.
+
 ## Dinero y tasa de cambio
 
 - Los importes originales se guardan como centavos enteros, evitando errores al sumar decimales.
@@ -170,7 +178,7 @@ npm run test:e2e      # Flujos completos en Chromium móvil y WebKit móvil
 
 Los E2E normales interceptan las APIs para usar datos aislados y reproducibles; no insertan recibos ficticios en Neon. El caso offline usa el service worker real. La verificación real de PostgreSQL y sus transacciones se registra por separado. La guía [QA](docs/QA.md) distingue pruebas ejecutadas de la validación pendiente en teléfonos físicos.
 
-Última revisión: **28 pruebas unitarias, 23 E2E y 7 comprobaciones PostgreSQL aprobadas**, además de lint, tipos y build. La navegación offline WebKit/macOS tiene un `fixme` por un error reproducido también sin la app; **iPhone instalado y modo avión aún requieren comprobación física**. No se considera una prueba aprobada. CI está configurado, pero todavía no ejecutado en GitHub.
+Última revisión: **33 pruebas unitarias, 23 E2E y 7 comprobaciones PostgreSQL aprobadas**, además de lint, tipos y build. La navegación offline WebKit/macOS tiene un `fixme` por un error reproducido también sin la app; **iPhone instalado y modo avión aún requieren comprobación física**. No se considera una prueba aprobada. CI está configurado, pero todavía no ejecutado en GitHub.
 
 Para probar PostgreSQL real, configurar `.env.e2e.local` con las conexiones de una rama de QA, según la [guía de pruebas](docs/QA.md), y ejecutar `npm run test:db`. El script verifica rollback de sus datos. No utilizar producción.
 

@@ -22,6 +22,10 @@ import { RecordForm } from "./record-form";
 import { collections, type CollectionKind } from "./config";
 import { type DataMap, type TripRecord } from "@/domain/models";
 import { formatMoney } from "@/domain/money";
+import {
+  FlightReminderSettings,
+  FlightTimer,
+} from "@/features/itinerary/flight-timer";
 export function CollectionPage({ kind }: { kind: CollectionKind }) {
   const rows = useRecords(kind),
     { save, remove, notify, records } = useTrip();
@@ -156,16 +160,19 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
         </p>
       )}
       {kind === "leg" && (
-        <div className="callout small">
-          <strong>Salida 14 sep · Toronto 15 sep, 07:20 (hora local)</strong>
-          <p>
-            Regreso a Manta: 25 sep, 20:10. Revisa que los demás pasajeros
-            tengan los mismos vuelos antes de viajar.
-          </p>
-          <Link href="/documentos" className="text-button">
-            Revisar documentos esenciales →
-          </Link>
-        </div>
+        <>
+          <div className="callout small">
+            <strong>Salida 14 sep · Toronto 15 sep, 07:20 (hora local)</strong>
+            <p>
+              Regreso a Manta: 25 sep, 20:10. Revisa que los demás pasajeros
+              tengan los mismos vuelos antes de viajar.
+            </p>
+            <Link href="/documentos" className="text-button">
+              Revisar documentos esenciales →
+            </Link>
+          </div>
+          <FlightReminderSettings />
+        </>
       )}
       <button className="button primary" onClick={() => setEditing(null)}>
         <Plus size={18} /> Agregar{" "}
@@ -325,11 +332,14 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
                     </p>
                   )}
                   {kind === "leg" && (
-                    <p className="small">
-                      {[d.date, d.time, d.airline, d.flight]
-                        .filter(Boolean)
-                        .join(" · ") || "Información pendiente de completar"}
-                    </p>
+                    <>
+                      <p className="small">
+                        {[d.date, d.time, d.airline, d.flight]
+                          .filter(Boolean)
+                          .join(" · ") || "Información pendiente de completar"}
+                      </p>
+                      <FlightTimer record={r as TripRecord<"leg">} />
+                    </>
                   )}
                   {d.notes ? (
                     <p className="small muted clamp">{String(d.notes)}</p>

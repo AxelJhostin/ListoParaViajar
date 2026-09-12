@@ -17,8 +17,10 @@ test("summary, routes and documents contain real context", async ({ page }) => {
   await page.getByRole("link", { name: "Más", exact: true }).click();
   await page.getByRole("link", { name: /Ruta y vuelos/ }).click();
   await expect(
-    page.getByRole("heading", { name: "Colombia → Toronto", exact: true }),
+    page.getByRole("heading", { name: "Bogotá → Toronto", exact: true }),
   ).toBeVisible();
+  await expect(page.getByText("CUENTA REGRESIVA").first()).toBeVisible();
+  await expect(page.getByText(/Llegar al aeropuerto:/).first()).toBeVisible();
   await page.goto("/documentos");
   await expect(
     page.getByRole("heading", { name: "Pasaporte", exact: true }),

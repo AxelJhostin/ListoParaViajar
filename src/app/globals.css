@@ -439,6 +439,64 @@ legend {
   display: flex;
   justify-content: space-between;
 }
+.reminder-settings {
+  border-color: color-mix(in srgb, var(--primary) 18%, var(--line));
+}
+.timer-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: var(--rose);
+  color: var(--primary-dark);
+}
+.flight-timer {
+  margin-top: 12px;
+  padding: 13px;
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--mint) 45%, var(--surface));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.flight-timer > .row svg {
+  color: var(--green);
+  flex-shrink: 0;
+}
+.flight-timer [role="timer"] {
+  display: block;
+  margin-top: 2px;
+  font-size: 18px;
+  line-height: 1.35;
+  color: var(--green);
+}
+.flight-timer.departed {
+  background: var(--surface);
+}
+.flight-timer.departed [role="timer"] {
+  color: var(--muted);
+}
+.timer-advice {
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+}
+.timer-advice svg {
+  margin-top: 2px;
+  color: var(--primary-dark);
+  flex-shrink: 0;
+}
+.timer-advice strong {
+  margin-left: 4px;
+}
+.timer-unavailable {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--surface);
+}
 .route-line {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

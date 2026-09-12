@@ -73,4 +73,4 @@ Descargar un ZIP antes de cambiar de navegador/dominio y al terminar el viaje. I
 
 ## Límites deliberados
 
-Una familia/un viaje; acceso compartido; adjuntos locales; tasas referenciales; polling con la app visible; reportes PDF por impresión. No hay OCR, mapas offline, validación migratoria, pasarela de pagos, notificaciones push, repartición de deudas ni itinerario turístico inventado.
+Una familia/un viaje; acceso compartido; adjuntos locales; tasas referenciales; polling con la app visible; reportes PDF por impresión; temporizadores y notificaciones locales mientras el navegador pueda ejecutar la app. No hay OCR, mapas offline, validación migratoria, pasarela de pagos, proveedor push externo, ejecución garantizada con la app cerrada, repartición de deudas ni itinerario turístico inventado.

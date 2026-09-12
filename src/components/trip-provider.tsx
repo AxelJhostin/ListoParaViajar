@@ -23,6 +23,7 @@ import {
   type Rate,
   type TripRecord,
 } from "@/domain/models";
+import { FlightReminderMonitor } from "@/features/itinerary/flight-timer";
 type Context = {
   records: TripRecord[];
   pending: Pending[];
@@ -202,6 +203,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
+      <FlightReminderMonitor records={state.records} notify={notify} />
       {notice && (
         <div role="status" className="toast">
           {notice}

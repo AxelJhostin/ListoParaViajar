@@ -111,6 +111,11 @@ export const legSchema = z.object({
   flight: z.string().max(100),
   terminal: z.string().max(100),
   timezone: z.string().max(100),
+  departureType: z
+    .enum(["Traslado al aeropuerto", "Conexión"])
+    .default("Conexión"),
+  airportLeadMinutes: z.number().int().min(0).max(720).default(45),
+  travelMinutes: z.number().int().min(0).max(720).default(0),
   notes: note,
 });
 export const infoSchema = z.object({
@@ -238,6 +243,9 @@ export function defaults<K extends Kind>(kind: K): DataMap[K] {
       flight: "",
       terminal: "",
       timezone: "",
+      departureType: "Traslado al aeropuerto",
+      airportLeadMinutes: 120,
+      travelMinutes: 0,
       notes: "",
     },
     info: { description: "", value: "", notes: "" },

@@ -7,7 +7,7 @@ Fecha de revisión: 11 de septiembre de 2026. Esta guía distingue controles aut
 | Control                                | Resultado ejecutado                                                                                   |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | ESLint y TypeScript                    | Aprobados                                                                                             |
-| Vitest                                 | 28 pruebas aprobadas, 4 archivos                                                                      |
+| Vitest                                 | 33 pruebas aprobadas, 5 archivos                                                                      |
 | Build de producción                    | Aprobado; 12 rutas de aplicación precargadas y 71 recursos estáticos                                  |
 | Playwright                             | 23 aprobadas; 1 `fixme` en WebKit/macOS, explicado más abajo                                          |
 | Responsive                             | Las 12 rutas a 320 y 1280 px, en ambos motores; sin desbordamiento horizontal ni errores de ejecución |
@@ -117,7 +117,9 @@ Pendiente de ejecutar; no marcar completo solo por haber corrido Playwright.
 - [ ] Generar CSV y guardar reporte PDF con el diálogo de impresión del teléfono.
 - [ ] Probar letra ampliada, teclado, lector de pantalla y manejo cómodo para Abuelita.
 - [ ] Probar aviso de versión nueva sin perder anotaciones o adjuntos.
-- [ ] Completar horarios, aeropuertos, hospedaje y documentación con datos verificados.
+- [ ] Activar notificaciones desde un gesto, probar el aviso en app y con la PWA en segundo plano.
+- [ ] Comparar los seis temporizadores y horas recomendadas contra alarmas del teléfono.
+- [ ] Completar duración real del traslado en Manta y Toronto, hospedaje y documentación verificada.
 
 Si una de las pruebas offline en los teléfonos elegidos falla, corregirla antes de depender de la PWA durante el viaje. La app nunca debe ser la única copia de boletos o documentos.
 

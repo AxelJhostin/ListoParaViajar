@@ -91,7 +91,11 @@ Se muestra una advertencia si un vencimiento ingresado es anterior o igual al fi
 
 ### Ruta y vuelos
 
-Seis trayectos iniciales editables, según el boleto de Axel: AV1695, AV8376, AV254, AV255, AV8373 y AV1696. Cada uno tiene descripción, dirección ida/regreso, orden, fecha, hora, aeropuerto, aerolínea, vuelo, terminal, zona horaria y notas. Se permiten nuevas conexiones. Los registros advierten confirmar que los demás pasajeros compartan este itinerario.
+Seis trayectos iniciales editables, según el boleto de Axel: AV1695, AV8376, AV254, AV255, AV8373 y AV1696. Cada uno tiene descripción, dirección ida/regreso, orden, fecha, hora, aeropuerto, aerolínea, vuelo, terminal, zona horaria IANA y notas. Se permiten nuevas conexiones. Los registros advierten confirmar que los demás pasajeros compartan este itinerario.
+
+Cada vuelo tiene cuenta regresiva en vivo. Los inicios de trayecto calculan la hora recomendada de llegada al aeropuerto y, cuando se completa la duración del traslado, la hora para salir del alojamiento. Las conexiones calculan cuándo estar en la puerta. Los márgenes iniciales son 120 minutos en Manta, 180 en Toronto y 45 para conexiones, todos editables.
+
+La app recuerda 24 horas, 6 horas, 1 hora y 15 minutos antes. Los avisos internos y las notificaciones concedidas por el navegador se ejecutan localmente, sin proveedor externo. No se promete un aviso con la app completamente cerrada porque el sistema puede suspenderla.
 
 ### Información importante
 

@@ -1,5 +1,6 @@
-import type { TripRecord } from "@/domain/models";
+import { deviceDateTime, type TripRecord } from "@/domain/models";
 import { convert } from "@/domain/money";
+
 export function downloadBlob(blob: Blob, name: string) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -15,54 +16,100 @@ export function csvCell(value: unknown) {
 }
 export function buildCsv(rows: TripRecord<"expense">[]) {
   const header = [
-    "ID",
+    "N.º",
     "Fecha",
-    "Hora (Toronto / manual)",
-    "Descripción",
+    "Hora local",
+    "Concepto / lugar",
     "Categoría",
-    "Pagó",
-    "Método",
+    "Persona",
+    "Método de pago",
     "Moneda original",
     "Monto original",
-    "CAD referencial",
-    "USD referencial",
-    "USD por CAD",
-    "Fecha tasa",
-    "Fuente tasa",
+    "Monto referencial CAD",
+    "Monto referencial USD",
+    "Estado de conversión",
+    "Tasa USD por 1 CAD",
+    "Fecha de la tasa",
+    "Fuente de la tasa",
     "Notas",
   ];
-  const data = rows
-    .filter((r) => !r.deleted)
-    .map((r) => {
-      const d = r.data;
-      const cad = convert(d.amountMinor, d.currency, "CAD", d.rate),
-        usd = convert(d.amountMinor, d.currency, "USD", d.rate);
-      return [
-        r.id,
-        d.date,
-        d.time,
-        d.description,
-        d.category,
-        d.paidBy,
-        d.paymentMethod,
-        d.currency,
-        (d.amountMinor / 100).toFixed(2),
-        cad === null ? "" : (cad / 100).toFixed(2),
-        usd === null ? "" : (usd / 100).toFixed(2),
-        d.rate?.value,
-        d.rate?.date,
-        d.rate?.source,
-        d.notes,
-      ];
-    });
+  const activeRows = rows
+    .filter((record) => !record.deleted)
+    .sort((a, b) =>
+      `${a.data.date}T${a.data.time}`.localeCompare(
+        `${b.data.date}T${b.data.time}`,
+      ),
+    );
+  const data = activeRows.map((r, index) => {
+    const d = r.data;
+    const cad = convert(d.amountMinor, d.currency, "CAD", d.rate),
+      usd = convert(d.amountMinor, d.currency, "USD", d.rate);
+    return [
+      index + 1,
+      d.date,
+      d.time,
+      d.description,
+      d.category,
+      d.paidBy,
+      d.paymentMethod,
+      d.currency,
+      (d.amountMinor / 100).toFixed(2),
+      cad === null ? "" : (cad / 100).toFixed(2),
+      usd === null ? "" : (usd / 100).toFixed(2),
+      d.rate ? "Tasa registrada" : "Sin tasa de cambio",
+      d.rate?.value ?? "",
+      d.rate?.date ?? "",
+      d.rate?.source ?? "",
+      d.notes,
+    ];
+  });
+  const totalCad = activeRows.reduce(
+    (sum, row) =>
+      sum +
+      (convert(row.data.amountMinor, row.data.currency, "CAD", row.data.rate) ??
+        0),
+    0,
+  );
+  const totalUsd = activeRows.reduce(
+    (sum, row) =>
+      sum +
+      (convert(row.data.amountMinor, row.data.currency, "USD", row.data.rate) ??
+        0),
+    0,
+  );
+  const withoutRate = activeRows.filter((row) => !row.data.rate).length;
+  const total = activeRows.length
+    ? [
+        "TOTAL",
+        "",
+        "",
+        "Total referencial",
+        "",
+        "",
+        "",
+        "",
+        "",
+        (totalCad / 100).toFixed(2),
+        (totalUsd / 100).toFixed(2),
+        withoutRate
+          ? `${withoutRate} gasto${withoutRate === 1 ? "" : "s"} sin tasa`
+          : "Completo",
+        "",
+        "",
+        "",
+        "",
+      ]
+    : null;
   return (
     "\uFEFF" +
-    [header, ...data].map((row) => row.map(csvCell).join(",")).join("\r\n")
+    [header, ...data, ...(total ? [total] : [])]
+      .map((row) => row.map(csvCell).join(","))
+      .join("\r\n")
   );
 }
 export function downloadCsv(rows: TripRecord<"expense">[]) {
   downloadBlob(
     new Blob([buildCsv(rows)], { type: "text/csv;charset=utf-8;" }),
-    `gastos-viaje-${new Date().toISOString().slice(0, 10)}.csv`,
+    `reporte-gastos-viaje-${deviceDateTime().date}.csv`,
   );
 }

@@ -92,8 +92,10 @@ describe("Money and records", () => {
       },
     };
     const csv = buildCsv([row]);
+    expect(csv).toContain('"N.º","Fecha","Hora local"');
     expect(csv).toContain('"\'=CMD(""x"")"');
     expect(csv).toContain('"12.50"');
     expect(csv).toContain('"9.00"');
+    expect(csv).toContain('"TOTAL","","","Total referencial"');
   });
 });

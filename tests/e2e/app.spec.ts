@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 import AxeBuilder from "@axe-core/playwright";
 import { mockCloud } from "./mock-cloud";
-import { defaults } from "../../src/domain/models";
+import { defaults, type TripRecord } from "../../src/domain/models";
 test.use({ serviceWorkers: "block" });
 let cloud: ReturnType<typeof mockCloud>;
 test.beforeEach(async ({ context }) => {
@@ -57,6 +57,107 @@ test("expense persists on reload, edit works and report exports", async ({
   await page.getByRole("button", { name: /Descargar CSV/ }).click();
   expect((await download).suggestedFilename()).toContain(".csv");
 });
+
+test("professional report exports totals and renders a polished PDF", async ({
+  page,
+  browserName,
+}, testInfo) => {
+  test.skip(browserName !== "chromium", "La creación de PDF usa Chromium.");
+  const rate = {
+    value: 0.72,
+    date: "2026-09-14",
+    fetchedAt: "2026-09-14T12:00:00Z",
+    source: "Tasa de prueba",
+    manual: false,
+  };
+  const samples: Array<
+    Pick<
+      TripRecord<"expense">["data"],
+      | "description"
+      | "amountMinor"
+      | "category"
+      | "paidBy"
+      | "paymentMethod"
+      | "date"
+      | "time"
+      | "notes"
+    >
+  > = [
+    {
+      description: "Desayuno en el aeropuerto",
+      amountMinor: 2850,
+      category: "Comida",
+      paidBy: "Axel",
+      paymentMethod: "Crédito",
+      date: "2026-09-14",
+      time: "16:30",
+      notes: "Escala en Quito",
+    },
+    {
+      description: "Traslado al alojamiento",
+      amountMinor: 6800,
+      category: "Transporte",
+      paidBy: "Sebastián",
+      paymentMethod: "Débito",
+      date: "2026-09-15",
+      time: "08:40",
+      notes: "Aeropuerto de Toronto",
+    },
+    {
+      description: "Almuerzo familiar",
+      amountMinor: 9240,
+      category: "Comida",
+      paidBy: "Abuelita",
+      paymentMethod: "Efectivo",
+      date: "2026-09-15",
+      time: "13:10",
+      notes: "",
+    },
+    {
+      description: "Entradas al museo",
+      amountMinor: 7550,
+      category: "Actividades",
+      paidBy: "Axel",
+      paymentMethod: "Apple/Google Pay",
+      date: "2026-09-16",
+      time: "10:00",
+      notes: "Tres entradas",
+    },
+  ];
+  cloud.records.push(
+    ...samples.map((data) => ({
+      id: crypto.randomUUID(),
+      kind: "expense" as const,
+      version: 1,
+      updatedAt: "2026-09-16T15:00:00Z",
+      deleted: false,
+      data: { ...defaults("expense"), ...data, rate },
+    })),
+  );
+  await page.goto("/reportes");
+  await expect(
+    page.getByRole("heading", { name: "Reporte de gastos", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText("4 gastos registrados")).toBeVisible();
+
+  const csvDownload = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Exportar CSV profesional" }).click();
+  const csv = await csvDownload;
+  expect(csv.suggestedFilename()).toMatch(/^reporte-gastos-viaje-.*\.csv$/);
+  expect(await readFile((await csv.path())!, "utf8")).toContain(
+    '"TOTAL","","","Total referencial"',
+  );
+
+  await page.emulateMedia({ media: "print" });
+  await expect(page.locator(".report-table")).toBeVisible();
+  await page.pdf({
+    path: testInfo.outputPath("reporte-gastos.pdf"),
+    format: "A4",
+    printBackground: true,
+    preferCSSPageSize: true,
+  });
+});
+
 test("converter works in both directions and manual rate", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Abrir conversor CAD a USD" }).click();

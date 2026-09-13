@@ -46,7 +46,7 @@ export function Dashboard() {
         <h1>
           ¡Hola, familia
           <br />
-          Hernández Sumba!
+          Hernández Menéndez!
         </h1>
         <p className="muted">
           La emoción de viajar, la tranquilidad de llevarlo todo.

@@ -66,7 +66,7 @@ export const packingSchema = z.object({
   description: text,
   person: text,
   category: text,
-  direction: z.enum(["Ida", "Regreso"]),
+  direction: z.enum(["Ida", "Regreso", "Ida y vuelta"]),
   quantity: z.number().int().min(1).max(999),
   done: z.boolean(),
   notes: note,
@@ -184,14 +184,18 @@ export const mutationSchema = z.object({
   baseVersion: z.number().int().nonnegative(),
   record: recordSchema,
 });
+
+/** Fecha y hora local para registrar acciones en el momento en que ocurren. */
+export function deviceDateTime(now = new Date()) {
+  const twoDigits = (value: number) => String(value).padStart(2, "0");
+  return {
+    date: `${now.getFullYear()}-${twoDigits(now.getMonth() + 1)}-${twoDigits(now.getDate())}`,
+    time: `${twoDigits(now.getHours())}:${twoDigits(now.getMinutes())}`,
+  };
+}
+
 export function defaults<K extends Kind>(kind: K): DataMap[K] {
-  const now = new Date();
-  const date = new Intl.DateTimeFormat("en-CA", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    timeZone: "America/Toronto",
-  }).format(now);
+  const { date, time } = deviceDateTime();
   const data: DataMap = {
     expense: {
       description: "",
@@ -202,11 +206,7 @@ export function defaults<K extends Kind>(kind: K): DataMap[K] {
       paidBy: "Axel",
       paymentMethod: "Efectivo",
       date,
-      time: new Intl.DateTimeFormat("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        timeZone: "America/Toronto",
-      }).format(now),
+      time,
       notes: "",
     },
     packing: {

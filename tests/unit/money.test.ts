@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { convert, expenseTotal, parseMoney } from "@/domain/money";
 import {
+  deviceDateTime,
   defaults,
   expenseSchema,
   recordSchema,
@@ -16,6 +17,12 @@ const rate: Rate = {
   manual: false,
 };
 describe("Money and records", () => {
+  it("formats the current device date and time for a new expense", () => {
+    expect(deviceDateTime(new Date(2026, 8, 14, 14, 5))).toEqual({
+      date: "2026-09-14",
+      time: "14:05",
+    });
+  });
   it("parses cents without float multiplication", () => {
     expect(parseMoney("12,30")).toBe(1230);
     expect(parseMoney("0.29")).toBe(29);

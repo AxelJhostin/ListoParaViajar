@@ -278,6 +278,7 @@ export function CollectionPage({ kind }: { kind: CollectionKind }) {
               <option value="">Ambos</option>
               <option>Ida</option>
               <option>Regreso</option>
+              <option>Ida y vuelta</option>
             </select>
           </Field>
         )}

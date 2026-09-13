@@ -215,8 +215,8 @@ export function ExpenseForm({
           </Field>
         </div>
         <p className="small muted">
-          Fecha contable del viaje (Toronto). Puedes ajustarla para los
-          traslados.
+          Se completa con la fecha y hora de este dispositivo. Puedes ajustarlas
+          si registras un gasto más tarde.
         </p>
         <Field label="Notas adicionales">
           <textarea

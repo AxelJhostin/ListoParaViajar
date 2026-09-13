@@ -44,7 +44,11 @@ export const collections: Record<
         ],
         custom: true,
       },
-      { key: "direction", label: "Trayecto", options: ["Ida", "Regreso"] },
+      {
+        key: "direction",
+        label: "Trayecto",
+        options: ["Ida", "Regreso", "Ida y vuelta"],
+      },
       { key: "quantity", label: "Cantidad", type: "number" },
     ],
   },

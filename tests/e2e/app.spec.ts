@@ -129,6 +129,9 @@ test("packing ida/regreso and purchase recipients persist", async ({
     "Compartido",
   ]);
   await person.selectOption("Sebastián");
+  await expect(
+    page.getByLabel("Trayecto", { exact: true }).locator("option"),
+  ).toHaveText(["Ida", "Regreso", "Ida y vuelta"]);
   await page.getByLabel("Trayecto", { exact: true }).selectOption("Regreso");
   await page.getByRole("button", { name: "Guardar", exact: true }).click();
   await page.getByRole("button", { name: "Listo", exact: true }).click();

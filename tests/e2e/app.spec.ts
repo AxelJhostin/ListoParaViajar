@@ -121,9 +121,18 @@ test("packing ida/regreso and purchase recipients persist", async ({
     .getByRole("button", { name: "Agregar elemento", exact: true })
     .click();
   await page.getByLabel("Elemento", { exact: true }).fill("Cargador");
+  const person = page.getByLabel("Persona", { exact: true });
+  await expect(person.locator("option")).toHaveText([
+    "Axel",
+    "Sebastián",
+    "Abuelita",
+    "Compartido",
+  ]);
+  await person.selectOption("Sebastián");
   await page.getByLabel("Trayecto", { exact: true }).selectOption("Regreso");
   await page.getByRole("button", { name: "Guardar", exact: true }).click();
   await page.getByRole("button", { name: "Listo", exact: true }).click();
+  await expect(page.getByText("Sebastián · Regreso · Ropa")).toBeVisible();
   await page.getByRole("button", { name: "Pendiente", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "Empacado", exact: true }),

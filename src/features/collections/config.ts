@@ -29,7 +29,6 @@ export const collections: Record<
         key: "person",
         label: "Persona",
         options: [...people.slice(0, 3), "Compartido"],
-        custom: true,
       },
       {
         key: "category",
